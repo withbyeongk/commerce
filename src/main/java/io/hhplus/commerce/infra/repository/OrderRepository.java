@@ -1,6 +1,6 @@
 package io.hhplus.commerce.infra.repository;
 
-import io.hhplus.commerce.domain.pojo.Order;
+import io.hhplus.commerce.domain.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

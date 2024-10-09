@@ -1,4 +1,4 @@
-package io.hhplus.commerce.domain.pojo;
+package io.hhplus.commerce.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
