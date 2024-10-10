@@ -1,6 +1,7 @@
 package io.hhplus.commerce.presentation.controller;
 
 import io.hhplus.commerce.application.service.CartService;
+import io.hhplus.commerce.presentation.dto.ChangeQuantityDto;
 import io.hhplus.commerce.presentation.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class CartController {
     }
 
     @PatchMapping("/{memberId}/cart/products")
-    public void changeQuantity() {
+    public void changeQuantity(@RequestBody ChangeQuantityDto dto) {
 
     }
 }
