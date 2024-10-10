@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class Product {
+    private Long productId;
     private String name;
     private int price;
     private int stock;
