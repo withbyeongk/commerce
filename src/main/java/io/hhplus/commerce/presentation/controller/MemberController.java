@@ -1,6 +1,7 @@
 package io.hhplus.commerce.presentation.controller;
 
 import io.hhplus.commerce.application.service.MemberService;
+import io.hhplus.commerce.presentation.dto.ChargePointDto;
 import io.hhplus.commerce.presentation.dto.PointResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
@@ -13,7 +14,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/points")
-    public void chargePoint(@RequestBody @Param("points") int point, @Param("member_id") Long memberId) {
+    public void chargePoint(@RequestBody ChargePointDto dto) {
 
     }
 
