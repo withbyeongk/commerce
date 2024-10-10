@@ -4,6 +4,7 @@ import io.hhplus.commerce.application.service.ProductService;
 import io.hhplus.commerce.presentation.dto.ProductResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +29,7 @@ public class ProductController {
     }
 
     @GetMapping("{product_id}")
-    public ProductResponseDTO findById(Long productId) {
+    public ProductResponseDTO findById(@PathVariable Long productId) {
         return new ProductResponseDTO(1L, "Product 1", 100, 50, "Description 1", null, LocalDateTime.now(), LocalDateTime.now());
     }
 
