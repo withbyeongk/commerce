@@ -1,6 +1,6 @@
 package io.hhplus.commerce.presentation.dto;
 
-public record PointResponseDTO(
+public record PointResponseDto(
     Long memberId,
     int point
 ) {

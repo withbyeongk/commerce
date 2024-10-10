@@ -1,6 +1,6 @@
 package io.hhplus.commerce.presentation.dto;
 
-public record PayResponseDTO(
+public record PayResponseDto(
         Long payId
 ) {
 }

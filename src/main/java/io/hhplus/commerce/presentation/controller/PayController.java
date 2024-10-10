@@ -1,7 +1,7 @@
 package io.hhplus.commerce.presentation.controller;
 
-import io.hhplus.commerce.presentation.dto.PayRequestDTO;
-import io.hhplus.commerce.presentation.dto.PayResponseDTO;
+import io.hhplus.commerce.presentation.dto.PayRequestDto;
+import io.hhplus.commerce.presentation.dto.PayResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +15,7 @@ public class PayController {
     private final PayController payController;
 
     @PostMapping("/pay")
-    public PayResponseDTO pay(@RequestBody PayRequestDTO dto) {
-        return new PayResponseDTO(1L);
+    public PayResponseDto pay(@RequestBody PayRequestDto dto) {
+        return new PayResponseDto(1L);
     }
 }

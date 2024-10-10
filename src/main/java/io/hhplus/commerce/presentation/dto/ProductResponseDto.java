@@ -3,7 +3,7 @@ package io.hhplus.commerce.presentation.dto;
 import java.time.LocalDateTime;
 
 
-public record ProductResponseDTO (
+public record ProductResponseDto(
         Long productId,
         String name,
         int price,

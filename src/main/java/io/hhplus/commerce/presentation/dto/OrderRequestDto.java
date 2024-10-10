@@ -2,7 +2,7 @@ package io.hhplus.commerce.presentation.dto;
 
 import java.util.List;
 
-public record OrderRequestDTO(
+public record OrderRequestDto(
     Long memberId,
     List<Long> products
 ) {
