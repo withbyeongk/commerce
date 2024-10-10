@@ -466,5 +466,62 @@
 
 ---
 
+# 패키지 구조
+
+```html
+
+ㄴapplication
+  ㄴservice
+    ㄴCarttService
+    ㄴMembertService
+    ㄴOrderService
+    ㄴProductService
+ㄴdomain
+// 도메인 객체와 db매핑 엔티티를 분리
+  ㄴentity
+    ㄴCart
+    ㄴMember
+    ㄴOrder
+    ㄴOrderItem
+    ㄴPay
+    ㄴProducdt
+  ㄴrepository
+    ㄴCartRepository
+    ㄴMemberRepository
+    ㄴOrderItemRepository
+    ㄴOrderRepository
+    ㄴPayRepository
+    ㄴProductRepository
+// 정책을 세워서 값을 사용할 경우에 사용
+  ㄴpolicy
+    ㄴConst
+ㄴinfra
+// DB 매핑용 엔티티
+  ㄴentity
+    ㄴCartEntity
+    ㄴMemberEntity
+    ㄴOrderEntity
+    ㄴOrderItemEntity
+    ㄴPayEntity
+    ㄴProductEntity
+ㄴpresentation
+  ㄴcontroller
+    ㄴCartController
+    ㄴMemberController
+    ㄴOrderController
+    ㄴProductController
+  -dto
+    ㄴCartDto
+    ㄴMemberDto
+    ㄴOrderDto
+    ㄴOrderItemDto
+    ㄴPayDto
+    ㄴProductDto
+    ...
+
+```
+
+위와 같은 구조로 패키지 구조를 설계했습니다.
+
 
 
