@@ -1,6 +1,7 @@
 package io.hhplus.commerce.presentation.controller;
 
 import io.hhplus.commerce.application.service.CartService;
+import io.hhplus.commerce.presentation.dto.CartPutInDto;
 import io.hhplus.commerce.presentation.dto.ChangeQuantityDto;
 import io.hhplus.commerce.presentation.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +16,8 @@ import java.util.List;
 public class CartController {
     private final CartService cartService;
 
-    @GetMapping("/cart/products")
-    public void putIn() {
+    @PostMapping("/cart/products")
+    public void putIn(@RequestBody CartPutInDto dto) {
 
     }
 
