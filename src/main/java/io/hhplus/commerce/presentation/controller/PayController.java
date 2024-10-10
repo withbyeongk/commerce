@@ -1,5 +1,6 @@
 package io.hhplus.commerce.presentation.controller;
 
+import io.hhplus.commerce.application.service.PayService;
 import io.hhplus.commerce.presentation.dto.PayRequestDto;
 import io.hhplus.commerce.presentation.dto.PayResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/")
 @RequiredArgsConstructor
 public class PayController {
-    private final PayController payController;
+    private final PayService payService;
 
     @PostMapping("/pay")
     public PayResponseDto pay(@RequestBody PayRequestDto dto) {
