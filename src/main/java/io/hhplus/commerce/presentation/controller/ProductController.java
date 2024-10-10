@@ -28,7 +28,7 @@ public class ProductController {
         return getMockBestSellers();
     }
 
-    @GetMapping("{product_id}")
+    @GetMapping("/{product_id}")
     public ProductResponseDto findById(@PathVariable Long productId) {
         return new ProductResponseDto(1L, "Product 1", 100, 50, "Description 1", null, LocalDateTime.now(), LocalDateTime.now());
     }
