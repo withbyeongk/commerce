@@ -32,7 +32,7 @@ public class CartController {
                 new ProductResponseDto(2L, "Product 2", 200, 49, "Description 2", null, LocalDateTime.now(), LocalDateTime.now()));
     }
 
-    @PatchMapping("/{memberId}/cart/products")
+    @PatchMapping("/cart/products")
     public void changeQuantity(@RequestBody ChangeQuantityDto dto) {
 
     }
