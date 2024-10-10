@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class Order {
+    private Long orderId;
     private Long memberId;
     private int totalPrice;
     private LocalDateTime deletedAt;
