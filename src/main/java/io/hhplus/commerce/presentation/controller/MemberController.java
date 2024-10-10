@@ -18,7 +18,7 @@ public class MemberController {
     }
 
     @GetMapping("/{memberId}")
-    public PointResponseDto getPoint(@PathVariable Long memberId) {
+    public PointResponseDto getPoint(@PathVariable (name = "memberId")Long memberId) {
         return new PointResponseDto(memberId, 100);
     }
 
