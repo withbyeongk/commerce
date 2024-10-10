@@ -1,9 +1,8 @@
 package io.hhplus.commerce.domain.repository;
 
-import io.hhplus.commerce.domain.entity.Order;
+import io.hhplus.commerce.infra.entity.OrderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface OrderRepository extends JpaRepository<Order, Long> {
+
+public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
 }

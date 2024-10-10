@@ -1,9 +1,7 @@
 package io.hhplus.commerce.domain.repository;
 
-import io.hhplus.commerce.domain.entity.Cart;
+import io.hhplus.commerce.infra.entity.CartEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface CartRepository extends JpaRepository<Cart, Long> {
+public interface CartRepository extends JpaRepository<CartEntity, Long> {
 }

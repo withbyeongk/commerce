@@ -1,9 +1,8 @@
 package io.hhplus.commerce.domain.repository;
 
-import io.hhplus.commerce.domain.entity.Product;
+import io.hhplus.commerce.infra.entity.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+
+public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 }
