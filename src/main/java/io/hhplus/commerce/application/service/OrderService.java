@@ -1,7 +1,7 @@
 package io.hhplus.commerce.application.service;
 
-import io.hhplus.commerce.domain.repository.OrderItemRepository;
-import io.hhplus.commerce.domain.repository.OrderRepository;
+import io.hhplus.commerce.infra.repository.OrderItemRepository;
+import io.hhplus.commerce.infra.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
