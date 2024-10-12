@@ -146,11 +146,11 @@
 
 # 8. 기술 스택
 
-기본적으로 Spring Boot 를 이용하여 구현을 할 것이며 
-데이터 베이스는 빠르게 테스트할 수 있도록 일단 H2 메모리 DB를 사용했습니다.
-생산성을 높이기 위해 ORM은 JPA를 사용하였고,
-테스트를 위해 JUnit 과 AssertJ를 사용할 예정입니다.
-
+- Framework : Spring Boot 3.3.4 / JPA 3.0
+- Build Tool : Gradle 8.10.2
+- Language : Java 17
+- Database : H2 (추후 Mysql 8.0로 교체)
+- Test : JUnit 5 / AssertJ 3.25.3
 
 
 
