@@ -1,6 +1,6 @@
 package io.hhplus.commerce.application.service;
 
-import io.hhplus.commerce.infra.repository.MemberRepository;
+import io.hhplus.commerce.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
