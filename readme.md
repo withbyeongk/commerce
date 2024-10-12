@@ -19,7 +19,14 @@
 ---
 
 # 2. 마일스톤
+
+## 1주차 마일스톤
+
 ![마일스톤 이미지](./img/milestone.png)
+
+## 2주차 마일스톤
+
+[2주차 마일스톤](https://github.com/users/withbyeongk/projects/2/views/4)
 
 ---
 
