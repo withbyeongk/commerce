@@ -1,6 +1,7 @@
 package io.hhplus.commerce.application.util;
 
 import io.hhplus.commerce.domain.entity.Product;
+import io.hhplus.commerce.presentation.dto.ProductRequestDto;
 import io.hhplus.commerce.presentation.dto.ProductResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,5 +16,9 @@ public class Converter {
 
     public static Page<ProductResponseDto> convertToDto(Page<Product> products) {
         return new PageImpl<>(products.getContent().stream().map(Converter::convertToDto).collect(Collectors.toList()));
+    }
+
+    public static Product convertToEntity(ProductRequestDto dto) {
+        return new Product(dto.name(), dto.price(), dto.stock(), dto.description());
     }
 }

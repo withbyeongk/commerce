@@ -44,6 +44,20 @@ public class Product {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    public Product(String name, int price, int stock, String description) {
+        this(name, price, stock, description, null, null, LocalDateTime.now());
+    }
+
+    public Product(String name, int price, int stock, String description, LocalDateTime deletedAt, LocalDateTime updatedAt, LocalDateTime now) {
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
+        this.description = description;
+        this.deletedAt = deletedAt;
+        this.updatedAt = updatedAt;
+        this.createdAt = now;
+    }
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();

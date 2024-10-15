@@ -2,6 +2,7 @@ package io.hhplus.commerce.application.service;
 
 import io.hhplus.commerce.application.util.Converter;
 import io.hhplus.commerce.infra.repository.ProductRepository;
+import io.hhplus.commerce.presentation.dto.ProductRequestDto;
 import io.hhplus.commerce.presentation.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,4 +18,7 @@ public class ProductService {
         return Converter.convertToDto(productRepository.findAll(pageable));
     }
 
+    public Long add(ProductRequestDto dto) {
+        return productRepository.save(Converter.convertToEntity(dto)).getId();
+    }
 }

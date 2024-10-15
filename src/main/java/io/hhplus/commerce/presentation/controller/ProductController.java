@@ -1,14 +1,12 @@
 package io.hhplus.commerce.presentation.controller;
 
 import io.hhplus.commerce.application.service.ProductService;
+import io.hhplus.commerce.presentation.dto.ProductRequestDto;
 import io.hhplus.commerce.presentation.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +17,11 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
 
+
+    @PostMapping("/add")
+    public Long add(@RequestBody ProductRequestDto dto) {
+        return productService.add(dto);
+    }
 
     @GetMapping("/all")
     public Page<ProductResponseDto> findAll(Pageable pageable) {
