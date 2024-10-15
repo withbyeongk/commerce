@@ -3,6 +3,8 @@ package io.hhplus.commerce.presentation.controller;
 import io.hhplus.commerce.application.service.ProductService;
 import io.hhplus.commerce.presentation.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +21,8 @@ public class ProductController {
 
 
     @GetMapping("/all")
-    public List<ProductResponseDto> findAll() {
-        return getMock20();
+    public Page<ProductResponseDto> findAll(Pageable pageable) {
+        return productService.findAll(pageable);
     }
 
     @GetMapping("/bestsellers")
