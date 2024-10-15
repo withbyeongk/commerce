@@ -22,7 +22,7 @@ class ProductResponseDtoTest {
         ProductResponseDto productResponseDto = new ProductResponseDto(product);
 
         // then
-        assertEquals(product.getProductId(), productResponseDto.productId());
+        assertEquals(product.getId(), productResponseDto.productId());
         assertEquals(product.getName(), productResponseDto.name());
         assertEquals(product.getPrice(), productResponseDto.price());
         assertEquals(product.getStock(), productResponseDto.stock());

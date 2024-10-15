@@ -16,6 +16,6 @@ public record ProductResponseDto(
         LocalDateTime createdAt
 ){
     public ProductResponseDto(Product product) {
-        this(product.getProductId(), product.getName(), product.getPrice(), product.getStock(), product.getDescription(), product.getDeletedAt(), product.getUpdatedAt(), product.getCreatedAt());
+        this(product.getId(), product.getName(), product.getPrice(), product.getStock(), product.getDescription(), product.getDeletedAt(), product.getUpdatedAt(), product.getCreatedAt());
     }
 }
