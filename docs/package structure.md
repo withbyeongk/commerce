@@ -1,5 +1,5 @@
 # 패키지 구조
-
+```
 └─commerce
     │  CommerceApplication.java
     │
@@ -58,5 +58,5 @@
                 PayResponseDto.java
                 PointResponseDto.java
                 ProductResponseDto.java
-
+```
 클린 아키텍처를 적용하여 위와 같은 구조로 패키지 구조를 설계했습니다.
