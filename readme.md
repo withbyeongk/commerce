@@ -75,23 +75,30 @@
 
 ---
 
-# 5. ERD
+# 5. 시퀀스 다이어그램
+
+## 주문/결제 API
+![image.png](img/주문결제%20시퀀스%20다이어그램.png)
+
+---
+
+# 6. ERD
 ![img.png](img/erd.png)
 
 [ERD 문서 보러가기](docs/erd.md)
 
 ---
 
-# 6. API 명세서
+# 7. API 명세서
 
 [API Specification 보러가기](docs/API%20specification.md)
 
 ---
 
-# 7. 패키지 구조
+# 8. 패키지 구조
 [패키지 구조 보러가기](docs/package%20structure.md)
 
-# 8. 기술 스택
+# 9. 기술 스택
 
 - Framework : Spring Boot 3.3.4 / JPA 3.0
 - Build Tool : Gradle 8.10.2
