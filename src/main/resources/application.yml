@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: commerce
+
+  data:
+    web:
+      pageable:
+        default-page-size: 20
+        one-indexed-parameters: true
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        ddl-auto: create
+        format_sql: true
+        show_sql: true
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+          implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+
