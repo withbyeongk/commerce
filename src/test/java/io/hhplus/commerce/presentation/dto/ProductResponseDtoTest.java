@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 class ProductResponseDtoTest {
 
@@ -20,13 +22,13 @@ class ProductResponseDtoTest {
         ProductResponseDto productResponseDto = new ProductResponseDto(product);
 
         // then
-        assert productResponseDto.productId() == product.getProductId();
-        assert productResponseDto.name() == product.getName();
-        assert productResponseDto.price() == product.getPrice();
-        assert productResponseDto.stock() == product.getStock();
-        assert productResponseDto.description() == product.getDescription();
-        assert productResponseDto.deletedAt() == product.getDeletedAt();
-        assert productResponseDto.updatedAt() == product.getUpdatedAt();
-        assert productResponseDto.createdAt() == product.getCreatedAt();
+        assertEquals(product.getProductId(), productResponseDto.productId());
+        assertEquals(product.getName(), productResponseDto.name());
+        assertEquals(product.getPrice(), productResponseDto.price());
+        assertEquals(product.getStock(), productResponseDto.stock());
+        assertEquals(product.getDescription(), productResponseDto.description());
+        assertEquals(product.getDeletedAt(), productResponseDto.deletedAt());
+        assertEquals(product.getUpdatedAt(), productResponseDto.updatedAt());
+        assertEquals(product.getCreatedAt(), productResponseDto.createdAt());
     }
 }
