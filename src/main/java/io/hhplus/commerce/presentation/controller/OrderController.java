@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/member/")
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping("/order")
+    @PostMapping("/{memberId}/order")
     public OrderResponseDto makeOrder(@RequestBody OrderRequestDto dto) {
-        return new OrderResponseDto(1L, 2L, 3L, 1000);
+        return orderService.makeOrder(dto);
     }
 
 }

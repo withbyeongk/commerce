@@ -1,11 +1,15 @@
 package io.hhplus.commerce.domain.entity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter
 @Table(name = "order_item")
+@NoArgsConstructor
+@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class OrderItem {
 
@@ -22,4 +26,10 @@ public class OrderItem {
 
     @Column(name = "amount", nullable = false)
     private int amount;
+
+    public OrderItem(Long orderId, Long productId, int amount) {
+        this.orderId = orderId;
+        this.productId = productId;
+        this.amount = amount;
+    }
 }

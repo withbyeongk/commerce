@@ -54,6 +54,10 @@ public class Member {
         this.point += points;
     }
 
+    public void use(int points) {
+        this.point -= points;
+    }
+
     public PointResponseDto toResponseDto() {
         return new PointResponseDto(id, point);
     }
