@@ -11,11 +11,19 @@ public record ProductResponseDto(
         int price,
         int stock,
         String description,
-        LocalDateTime deletedAt,
-        LocalDateTime updatedAt,
         LocalDateTime createdAt
 ){
+
+    public ProductResponseDto(Long productId, String name, int price, int stock, String description, LocalDateTime createdAt) {
+        this.productId = productId;
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
+        this.description = description;
+        this.createdAt = createdAt;
+    }
+
     public ProductResponseDto(Product product) {
-        this(product.getId(), product.getName(), product.getPrice(), product.getStock(), product.getDescription(), product.getDeletedAt(), product.getUpdatedAt(), product.getCreatedAt());
+        this(product.getId(), product.getName(), product.getPrice(), product.getStock(), product.getDescription(), product.getCreatedAt());
     }
 }

@@ -27,8 +27,6 @@ class ProductResponseDtoTest {
         assertEquals(product.getPrice(), productResponseDto.price());
         assertEquals(product.getStock(), productResponseDto.stock());
         assertEquals(product.getDescription(), productResponseDto.description());
-        assertEquals(product.getDeletedAt(), productResponseDto.deletedAt());
-        assertEquals(product.getUpdatedAt(), productResponseDto.updatedAt());
         assertEquals(product.getCreatedAt(), productResponseDto.createdAt());
     }
 }

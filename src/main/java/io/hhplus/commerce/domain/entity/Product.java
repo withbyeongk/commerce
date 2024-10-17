@@ -1,5 +1,6 @@
 package io.hhplus.commerce.domain.entity;
 
+import io.hhplus.commerce.presentation.dto.ProductResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -67,5 +68,9 @@ public class Product {
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public ProductResponseDto toResponseDto() {
+        return new ProductResponseDto(id, name, price, stock, description, createdAt);
     }
 }
