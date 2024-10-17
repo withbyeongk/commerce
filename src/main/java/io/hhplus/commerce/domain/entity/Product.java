@@ -1,5 +1,6 @@
 package io.hhplus.commerce.domain.entity;
 
+import io.hhplus.commerce.presentation.dto.ProductRequestDto;
 import io.hhplus.commerce.presentation.dto.ProductResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -57,6 +58,10 @@ public class Product {
         this.deletedAt = deletedAt;
         this.updatedAt = updatedAt;
         this.createdAt = now;
+    }
+
+    public Product(ProductRequestDto dto) {
+        this(dto.name(), dto.price(), dto.stock(), dto.description(), null, null, LocalDateTime.now());
     }
 
     @PrePersist
