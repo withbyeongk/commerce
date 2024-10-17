@@ -38,7 +38,7 @@ class MemberServiceUnitTest {
 
     @Test
     @DisplayName("회원 포인트 충전 시 잘못된 회원 ID가 입력될 경우 에러 발생")
-    void invalidMemberId() {
+    void invalidMemberIdInChargePoint() {
         // given
         Long memberId = 100L;
         ChargePointDto dto = new ChargePointDto(memberId, 1000);
@@ -71,5 +71,20 @@ class MemberServiceUnitTest {
         // then
         assertEquals(memberService.chargePoint(dto), chargedPoint);
 
+    }
+
+    @Test
+    @DisplayName("회원 포인트 조회 시 잘못된 회원 ID가 입력될 경우 에러 발생")
+    void invalidMemberIdInGetPoint() {
+        // given
+        Long memberId = 100L;
+
+        // when
+        when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
+
+        // then
+        assertThrows(IllegalArgumentException.class, () -> {
+            memberService.getPoint(memberId);
+        });
     }
 }

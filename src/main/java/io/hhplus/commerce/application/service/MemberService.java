@@ -5,6 +5,7 @@ import io.hhplus.commerce.domain.entity.Point;
 import io.hhplus.commerce.infra.repository.MemberRepository;
 import io.hhplus.commerce.infra.repository.PointRepository;
 import io.hhplus.commerce.presentation.dto.ChargePointDto;
+import io.hhplus.commerce.presentation.dto.PointResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,5 +48,13 @@ public class MemberService {
         memberRepository.save(member);
 
         return point.getPoint();
+    }
+
+    public PointResponseDto getPoint(Long memberId) {
+
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        optionalMember.orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다"));
+
+        return optionalMember.get().toResponseDto();
     }
 }

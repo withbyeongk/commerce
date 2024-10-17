@@ -1,4 +1,5 @@
 package io.hhplus.commerce.domain.entity;
+import io.hhplus.commerce.presentation.dto.PointResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -51,5 +52,9 @@ public class Member {
 
     public void charge(int points) {
         this.point += points;
+    }
+
+    public PointResponseDto toResponseDto() {
+        return new PointResponseDto(id, point);
     }
 }
