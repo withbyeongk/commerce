@@ -16,25 +16,23 @@ import java.util.List;
 public class CartController {
     private final CartService cartService;
 
-    @PostMapping("/cart/products")
+    @PostMapping("/{memberId}/cart")
     public void putIn(@RequestBody CartPutInDto dto) {
-
+        cartService.putIn(dto);
     }
 
-    @DeleteMapping("/cart/products")
-    public void putOff() {
-
+    @DeleteMapping("/cart/{cartId}")
+    public void putOff(@PathVariable (name = "cartId")Long cartId) {
+        cartService.putOff(cartId);
     }
 
-    @GetMapping("/{memberId}/cart/products")
+    @GetMapping("/{memberId}/cart")
     public List<ProductResponseDto> getCart(@PathVariable (name = "memberId")Long memberId) {
-        return List.of(
-                new ProductResponseDto(1L, "Product 1", 100, 50, "Description 1", null, LocalDateTime.now(), LocalDateTime.now()),
-                new ProductResponseDto(2L, "Product 2", 200, 49, "Description 2", null, LocalDateTime.now(), LocalDateTime.now()));
+        return cartService.getProductsInCart(memberId);
     }
 
-    @PatchMapping("/cart/products")
+    @PatchMapping("/{memberId}cart/products")
     public void changeQuantity(@RequestBody ChangeQuantityDto dto) {
-
+        cartService.changeQuantity(dto);
     }
 }

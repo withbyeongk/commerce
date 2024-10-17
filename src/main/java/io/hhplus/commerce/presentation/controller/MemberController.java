@@ -4,7 +4,6 @@ import io.hhplus.commerce.application.service.MemberService;
 import io.hhplus.commerce.presentation.dto.ChargePointDto;
 import io.hhplus.commerce.presentation.dto.PointResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,12 +14,12 @@ public class MemberController {
 
     @PostMapping("/points")
     public void chargePoint(@RequestBody ChargePointDto dto) {
-
+        memberService.chargePoint(dto);
     }
 
     @GetMapping("/{memberId}/points")
     public PointResponseDto getPoint(@PathVariable (name = "memberId")Long memberId) {
-        return new PointResponseDto(memberId, 100);
+        return memberService.getPoint(memberId);
     }
 
 
