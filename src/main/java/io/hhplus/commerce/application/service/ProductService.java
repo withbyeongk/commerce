@@ -1,6 +1,7 @@
 package io.hhplus.commerce.application.service;
 
 import io.hhplus.commerce.application.util.Converter;
+import io.hhplus.commerce.domain.entity.Product;
 import io.hhplus.commerce.infra.repository.ProductRepository;
 import io.hhplus.commerce.presentation.dto.ProductRequestDto;
 import io.hhplus.commerce.presentation.dto.ProductResponseDto;
@@ -20,5 +21,11 @@ public class ProductService {
 
     public Long add(ProductRequestDto dto) {
         return productRepository.save(Converter.convertToEntity(dto)).getId();
+    }
+
+    public ProductResponseDto findById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        return new ProductResponseDto(product);
     }
 }
