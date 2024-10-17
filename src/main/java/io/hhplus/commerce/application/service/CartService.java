@@ -64,6 +64,9 @@ public class CartService {
 
         if (beforeQuantity == dto.quantity()) {
             return ;
+        } else if (beforeQuantity == 0) {
+            cartRepository.deleteById(cart.getId());
+            return ;
         }
         cart.changeQuantity(dto.quantity());
         cartRepository.save(cart);
