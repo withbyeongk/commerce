@@ -9,6 +9,14 @@ public record OrderResponseDto(
     int totalPrice,
     List<OrderItemRequestDto> products
 ) implements Serializable {
+    public OrderInfoToDataPlatformDto toOrderInfoDto() {
+        return new OrderInfoToDataPlatformDto(
+                orderId,
+                totalPrice,
+                products
+        );
+    }
+
     public record OrderItemRequestDto(
             Long productId,
             int amount

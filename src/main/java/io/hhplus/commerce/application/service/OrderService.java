@@ -2,6 +2,7 @@ package io.hhplus.commerce.application.service;
 
 import io.hhplus.commerce.domain.entity.*;
 import io.hhplus.commerce.infra.repository.*;
+import io.hhplus.commerce.presentation.dataflatform.ReportOrderInfo;
 import io.hhplus.commerce.presentation.dto.OrderRequestDto;
 import io.hhplus.commerce.presentation.dto.OrderResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
     private final ProductStockRepository productStockRepository;
+    private final ReportOrderInfo reportOrderInfo;
 
     @Transactional(rollbackFor = {Exception.class})
     public OrderResponseDto makeOrder(OrderRequestDto dto) {
@@ -78,6 +80,8 @@ public class OrderService {
                 .collect(Collectors.toList());
 
         OrderResponseDto responseDto = new OrderResponseDto(order.getId(), order.getMemberId(), order.getTotalPrice(), orderItems);
+
+        reportOrderInfo.sendOrderInfomation(responseDto.toOrderInfoDto());
 
         return responseDto;
     }
