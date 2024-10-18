@@ -91,7 +91,7 @@
 
 # 7. API 명세서
 
-[API Specification 보러가기](docs/API%20specification.md)
+[API Specification with Swagger](docs/API%20specificationWithSwagger.md)
 
 ---
 

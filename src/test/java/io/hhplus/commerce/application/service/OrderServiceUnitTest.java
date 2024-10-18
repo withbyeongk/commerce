@@ -4,6 +4,7 @@ import io.hhplus.commerce.domain.entity.Member;
 import io.hhplus.commerce.domain.entity.Product;
 import io.hhplus.commerce.domain.entity.ProductStock;
 import io.hhplus.commerce.infra.repository.*;
+import io.hhplus.commerce.presentation.dataflatform.ReportOrderInfo;
 import io.hhplus.commerce.presentation.dto.OrderRequestDto;
 import io.hhplus.commerce.presentation.dto.OrderResponseDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +42,12 @@ class OrderServiceUnitTest {
 
     @Mock
     private OrderRepository orderRepository;
+
+    @Mock
+    private OrderItemRepository orderItemRepository;
+
+    @Mock
+    private ReportOrderInfo reportOrderInfo;
 
     @BeforeEach
     void setup() {
@@ -129,6 +136,7 @@ class OrderServiceUnitTest {
         when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
         when(productStockRepository.findById(anyLong())).thenReturn(Optional.of(productStock));
         when(orderRepository.save(org.mockito.ArgumentMatchers.any())).thenAnswer(i -> i.getArguments()[0]);
+        when(orderItemRepository.save(org.mockito.ArgumentMatchers.any())).thenAnswer(i -> i.getArguments()[0]);
 
         // when
         OrderResponseDto result = orderService.makeOrder(dto);
