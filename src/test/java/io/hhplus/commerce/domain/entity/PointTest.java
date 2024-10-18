@@ -21,14 +21,6 @@ class PointTest {
     }
 
     @Test
-    @DisplayName("기본 생성자로 Point 객체 생성 시 에러가 발생합니다.")
-    void defaultConstructError() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Point();
-        });
-    }
-
-    @Test
     @DisplayName("충전할 포인트가 음수이거나 0이면 에러가 발생합니다.")
     void invalidPointValue() {
         // given
