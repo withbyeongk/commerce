@@ -49,7 +49,7 @@ public class CartController {
 
     @Operation(summary = "장바구니에 담긴 상품의 수량 변경")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(mediaType = "application/json"))
-    @PatchMapping("/{memberId}cart/products")
+    @PatchMapping("/{memberId}/cart/products")
     public void changeQuantity(@RequestBody ChangeQuantityDto dto) {
         cartService.changeQuantity(dto);
     }
