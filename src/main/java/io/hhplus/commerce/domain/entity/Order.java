@@ -42,7 +42,6 @@ public class Order {
     public Order(Long id, int totalPrice, LocalDateTime now) {
         this.id = id;
         this.totalPrice = totalPrice;
-        this.updatedAt = now;
         this.createdAt = now;
     }
 

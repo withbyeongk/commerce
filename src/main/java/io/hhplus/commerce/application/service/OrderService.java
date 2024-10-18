@@ -59,15 +59,19 @@ public class OrderService {
         member.use(totalPrice);
 
         // 주문 등록
-        Order order = new Order(member.getId(), totalPrice, LocalDateTime.now());
+        Order order = new Order(null, member.getId(), totalPrice, null, null, LocalDateTime.now());
         Order savedOrder = orderRepository.save(order);
 
         for (OrderRequestDto.OrderItemRequestDto orderItemDto : dto.products()) {
             ProductStock productStock = productStockRepository.findById(orderItemDto.productId()).get();
+            Product product = productRepository.findById(orderItemDto.productId()).get();
 
             // 재고 감소
             productStock.minus(orderItemDto.amount());
             productStockRepository.save(productStock);
+
+            // 상품 테이블 업데이트
+            productRepository.save(product.minusStock(orderItemDto.amount()));
 
             // 주문 상품 등록
             orderItemRepository.save(new OrderItem(savedOrder.getId(), orderItemDto.productId(), orderItemDto.productId(), orderItemDto.amount()));
