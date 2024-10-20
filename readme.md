@@ -19,7 +19,14 @@
 ---
 
 # 2. 마일스톤
+
+## 1주차 마일스톤
+
 ![마일스톤 이미지](./img/milestone.png)
+
+## 2주차 마일스톤
+
+[2주차 마일스톤 보러가기](https://github.com/users/withbyeongk/projects/2/views/4)
 
 ---
 
@@ -63,472 +70,41 @@
 ---
 
 # 4. 플로우 차트
-## 상품 목록 조회 / 인기 상품 조회
-![img.png](img/flow01.png)
 
-## 상품 상세 조회
-![img.png](img/flow02.png)
-
-## 잔액 충전
-![img.png](img/flow03.png)
-
-## 잔액 조회
-![img.png](img/flow04.png)
-
-## 상품 주문 / 결제
-![img.png](img/flow05.png)
-
-## 장바구니 상품 수량 변경
-![img.png](img/flow06.png)
-
-## 장바구니에 담긴 상품 조회
-![img.png](img/flow07.png)
-
-## 장바구니에 담은 상품 삭제
-![img.png](img/flow08.png)
+[플로우 차트 보러가기](docs/flowChart.md)
 
 ---
 
-# 5. ERD
+# 5. 시퀀스 다이어그램
+
+## 주문/결제 API
+![image.png](img/주문결제%20시퀀스%20다이어그램.png)
+
+---
+
+# 6. ERD
 ![img.png](img/erd.png)
 
-## 엔티티
-
-### 회원 테이블
-
-![image.png](img/erd01.png)
-
-- 사용자의 포인트를 포함한 사용자 정보를 관리하기 위한 테이블
-- point : 회원의 포인트 조회를 위한 속성
-
-### 회원의 포인트 테이블
-
-![image.png](img/erd02.png)
-
-- 회원의 포인트를 충전하는 용도로 사용하는 테이블로 포인트 충전 시 회원테이블의 point를 update해 준다.
-
-### 상품 테이블
-
-![image.png](img/erd03.png)
-
-- 상품을 관리하기 위한 테이블
-- 상품에 필요한 이미지를 사용할 경우 두가지 방법을 사용해서 확장 가능
-    1. product_id를 외래키로 연결한 상품파일 테이블을 추가
-    2. 상품 테이블의 속성으로 추가
-- stock : 상품 재고 수 조회용 속성
-
-### 상품 재고 테이블
-
-![image.png](img/erd04.png)
-
-- 재고 관리용 테이블
-- 재고 수 수정이 이루어질 때 상품 테이블의 재고 수도 업데이트를 해 준다.
-
-### 주문 테이블
-
-![image.png](img/erd05.png)
-
-- 주문 정보를 관리하기 위한 테이블
-- 주문한 사용자를 식별하기 위해 member_id 를 외래키로 연결하여 사용
-- 주문한 총 금액 속성을 추가하여 간편하게 조회할 수 있도록 함
-
-### 주문 상세 테이블
-
-![image.png](img/erd06.png)
-
-- 각 주문 건에 해당하는 상품 목록을 관리하기 위한 테이블
-- 주문 건에 종속되는 테이블이므로 order_id를 식별자로 해도 좋을 것으로 생각하지만, 실제 개발 시 외래키 연결을 하지 않을 것이므로  ERD에서는 관계만 표현함.
-- 주문한 상품을 식별하기 위해 product_id 를 외래키로 연결하여 사용
-
-### 결제 테이블
-
-![image.png](img/erd07.png)
-
-- 결제 정보를 관리하기 위한 테이블
-- 주문이 있어야 결제를 할 수 있으므로 (= 종속되므로) order_id 를 외래키로 연결하여 사용
-- 주문 테이블의 총 주문 금액과 실제 결제 금액이 다를 수 있으므로(추후 쿠폰이나 할인 등이 있을 수 있음) 실 결제 금액 속성을 사용
-
-### 장바구니 테이블
-
-![image.png](img/erd08.png)
-
-- 장바구니 관리를 위한 테이블
-- 장바구니에 담는 사용자를 식별하기 위해 member_id 를 외래키로 연결하여 사용
-- 장바구니에 담을 상품을 식별하기 위해 product_id 를 외래키로 연결하여 사용
-- 장바구니에 담을 상품의 수량을 관리하기 위해 count 속성을 사용
-
-## 관계
-
-### 회원 - 장바구니 - 상품
-
-![image.png](img/erd09.png)
-
-- 다수의 회원이 여러 상품을 장바구니에 담을 수 있다.
-    - **회원 M : N 상품** 이며 매핑 테이블이 필요함.
-    - **회원 M : 1 장바구니 1 : N 상품** 과 같이 관계를 맺도록 설계함.
-
-### 회원 - 주문 - 주문 상세 - 상품
-
-![image.png](img/erd10.png)
-
-- 다수의 회원이 여러 상품을 주문할 수 있다.
-    - **회원 1 : M 주문** 관계로 설계함.
-- 하나의 주문에는 여러 주문 상품이 있을 수 있다.
-    - **주문 1 : M 주문 상세** 관계로 설계함.
-- 하나의 상품이 여러 주문 건에 포함될 수 있다.
-    - **상품 1 : M 주문 상세** 관계로 설계함.
-
-### 주문 - 결제
-
-![image.png](img/erd11.png)
-
-- 하나의 주문에는 하나의 결제가 이루어 진다.
-    - **주문 1 : 1 결제** 관계로 설정함.
+[ERD 문서 보러가기](docs/erd.md)
 
 ---
 
-# 6. API 명세서
+# 7. API 명세서
 
-## 상품
-
-### 상품 목록 조회
-
-- HTTP Method : GET
-- Path : localhost:8080/api/products/all
-- Request : No Parameters
-- Response : 200 
-  - 예시 : 
-```html
-[
-  {
-    "productId": 1,
-    "name": "Product 1",
-    "price": 100,
-    "stock": 50,
-    "description": "Description 1",
-    "deletedAt": null,
-    "updatedAt": "2024-10-11T03:19:34.9733854",
-    "createdAt": "2024-10-11T03:19:34.9733854"
-  },
-  {
-    "productId": 2,
-    "name": "Product 2",
-    "price": 200,
-    "stock": 100,
-    "description": "Description 2",
-    "deletedAt": null,
-    "updatedAt": "2024-10-11T03:19:34.9733854",
-    "createdAt": "2024-10-11T03:19:34.9733854"
-  },
-  {
-    "productId": 3,
-    "name": "Product 3",
-    "price": 300,
-    "stock": 150,
-    "description": "Description 3",
-    "deletedAt": null,
-    "updatedAt": "2024-10-11T03:19:34.9733854",
-    "createdAt": "2024-10-11T03:19:34.9733854"
-  },...
-]
-```
-- Error : X
-- Authorization : X
-
-### 인기 상품 목록 조회
-
-- HTTP Method : GET
-- Path : localhost:8080/api/products/bestsellers
-- Request : No Parameters
-- Response : 200
-  - 예시 :
-```html
-[
-  {
-    "productId": 1,
-    "name": "Product 1",
-    "price": 100,
-    "stock": 50,
-    "description": "Description 1",
-    "deletedAt": null,
-    "updatedAt": "2024-10-11T03:19:34.9733854",
-    "createdAt": "2024-10-11T03:19:34.9733854"
-  },
-  {
-    "productId": 2,
-    "name": "Product 2",
-    "price": 200,
-    "stock": 100,
-    "description": "Description 2",
-    "deletedAt": null,
-    "updatedAt": "2024-10-11T03:19:34.9733854",
-    "createdAt": "2024-10-11T03:19:34.9733854"
-  },
-  {
-    "productId": 3,
-    "name": "Product 3",
-    "price": 300,
-    "stock": 150,
-    "description": "Description 3",
-    "deletedAt": null,
-    "updatedAt": "2024-10-11T03:19:34.9733854",
-    "createdAt": "2024-10-11T03:19:34.9733854"
-  },...
-]
-```
-- Error : X
-- Authorization : X
-
-### 상품 상세 조회
-
-- HTTP Method : GET
-- Path : localhost:8080/api/products/{productId}
-- Request : product_id
-- Response : 200
-  - 예시 :
-```html
-[
-  {
-    "productId": 1,
-    "name": "Product 1",
-    "price": 100,
-    "stock": 50,
-    "description": "Description 1",
-    "deletedAt": null,
-    "updatedAt": "2024-10-11T03:19:34.9733854",
-    "createdAt": "2024-10-11T03:19:34.9733854"
-  }
-]
-```
-- Error : X
-- Authorization : X
-
-## 회원 포인트
-
-### 회원 포인트 충전
-
-- HTTP Method : POST
-- Path : localhost:8080/api/member/points
-- Request :
-  - 예시 :
-```html
-{
-    "memberId":"2",
-    "points":"300"
-}
-```
-- Response : 200
-- Error : X
-- Authorization : X
-
-### 회원 포인트 조회
-
-- HTTP Method : GET
-- Path : localhost:8080/api/member/{memberId}/points
-- Request :
-- Response : 200
-  - 예시 :
-```html
-{
-    "memberId": 1,
-    "point": 100
-}
-```
-- Error : X
-- Authorization : X
-
-## 주문
-
-### 상품 주문
-
-- HTTP Method : POST
-- Path : localhost:8080/api/order
-- Request :
-  - 예시 :
-```html
-{
-  "memberId":2,
-  "products": [1, 2, 3, 4, 5]
-}
-```
-- Response : 200
-  - 예시 :
-```html
-{
-  "orderId": 1,
-  "memberId": 2,
-  "productId": 3,
-  "totalPrice": 1000
-}
-```
-- Error : X
-- Authorization : X
-
-## 결제
-
-- HTTP Method : POST
-- Path : localhost:8080/api/pay
-- Request :
-  - 예시 :
-```html
-{
-  "memberId":2,
-  "orderId": 4
-}
-```
-- Response : 200
-  - 예시 :
-```html
-{
-  "payId": 1
-}
-```
-- Error : X
-- Authorization : X
-
-## 장바구니
-
-### 장바구니에 상품 담기
-
-- HTTP Method : POST
-- Path : localhost:8080/api/member/cart/products
-- Request :
-  - 예시 :
-```
-{
-  "memberId":2,
-  "productId": 4
-}
-```
-- Response : 200
-- Error : X
-- Authorization : X
-
-### 장바구니에서 상품 삭제
-
-- HTTP Method : DELETE
-- Path : localhost:8080/api/member/cart/products
-- Request : No Parameters
-- Response : 200
-- Error : X
-- Authorization : X
-
-### 장바구니에 담긴 상품 목록 조회
-
-- HTTP Method : GET
-- Path : localhost:8080/api/member/{memberId}/cart/products
-- Request : No Parameters
-- Response : 200
-  - 예시 :
-```html
-[
-  {
-    "productId": 1,
-    "name": "Product 1",
-    "price": 100,
-    "stock": 50,
-    "description": "Description 1",
-    "deletedAt": null,
-    "updatedAt": "2024-10-11T03:54:28.938402",
-    "createdAt": "2024-10-11T03:54:28.938402"
-  },
-  {
-    "productId": 2,
-    "name": "Product 2",
-    "price": 200,
-    "stock": 49,
-    "description": "Description 2",
-    "deletedAt": null,
-    "updatedAt": "2024-10-11T03:54:28.938402",
-    "createdAt": "2024-10-11T03:54:28.938402"
-  }
-]
-```
-- Error : X
-- Authorization : X
-
-### 장바구니에 있는 상품의 수량 변경
-
-- HTTP Method : PATCH
-- Path : localhost:8080/api/member/products
-- Request :
-  - 예시 :
-```html
-{
-  "memberId":2,
-  "productId": 4,
-  "quantity": 5
-}
-```
-- Response : 200
-- Error : X
-- Authorization : X
+[API Specification with Swagger](docs/API%20specificationWithSwagger.md)
 
 ---
 
-# 7. 패키지 구조
+# 8. 패키지 구조
+[패키지 구조 보러가기](docs/package%20structure.md)
 
-```html
+# 9. 기술 스택
 
-ㄴapplication
-  ㄴservice
-    ㄴCarttService
-    ㄴMembertService
-    ㄴOrderService
-    ㄴProductService
-ㄴdomain
-// 도메인 객체와 db매핑 엔티티를 분리
-  ㄴentity
-    ㄴCart
-    ㄴMember
-    ㄴOrder
-    ㄴOrderItem
-    ㄴPay
-    ㄴProducdt
-  ㄴrepository
-    ㄴCartRepository
-    ㄴMemberRepository
-    ㄴOrderItemRepository
-    ㄴOrderRepository
-    ㄴPayRepository
-    ㄴProductRepository
-// 정책을 세워서 값을 사용할 경우에 사용
-  ㄴpolicy
-    ㄴConst
-ㄴinfra
-// DB 매핑용 엔티티
-  ㄴentity
-    ㄴCartEntity
-    ㄴMemberEntity
-    ㄴOrderEntity
-    ㄴOrderItemEntity
-    ㄴPayEntity
-    ㄴProductEntity
-ㄴpresentation
-  ㄴcontroller
-    ㄴCartController
-    ㄴMemberController
-    ㄴOrderController
-    ㄴProductController
-  -dto
-    ㄴCartDto
-    ㄴMemberDto
-    ㄴOrderDto
-    ㄴOrderItemDto
-    ㄴPayDto
-    ㄴProductDto
-    ...
-
-```
-클린 아키텍처를 적용하여 위와 같은 구조로 패키지 구조를 설계했습니다.
-
-# 8. 기술 스택
-
-기본적으로 Spring Boot 를 이용하여 구현을 할 것이며 
-데이터 베이스는 빠르게 테스트할 수 있도록 일단 H2 메모리 DB를 사용했습니다.
-생산성을 높이기 위해 ORM은 JPA를 사용하였고,
-테스트를 위해 JUnit 과 AssertJ를 사용할 예정입니다.
-
+- Framework : Spring Boot 3.3.4 / JPA 3.0
+- Build Tool : Gradle 8.10.2
+- Language : Java 17
+- Database : H2 (추후 Mysql 8.0로 교체)
+- Test : JUnit 5 / AssertJ 3.25.3
 
 
 
