@@ -1,8 +1,8 @@
-package io.hhplus.commerce.presentation.controller;
+package io.hhplus.commerce.presentation.controller.member;
 
 import io.hhplus.commerce.application.service.MemberService;
-import io.hhplus.commerce.presentation.dto.ChargePointDto;
-import io.hhplus.commerce.presentation.dto.PointResponseDto;
+import io.hhplus.commerce.presentation.controller.member.dto.ChargePointDto;
+import io.hhplus.commerce.presentation.controller.member.dto.PointResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,5 +1,5 @@
 package io.hhplus.commerce.domain.entity;
-import io.hhplus.commerce.presentation.dto.PointResponseDto;
+import io.hhplus.commerce.presentation.controller.member.dto.PointResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

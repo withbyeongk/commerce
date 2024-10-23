@@ -35,7 +35,7 @@ class ProductServiceTest {
         Long id = 1L;
         when(productRepository.findById(id)).thenReturn(Optional.empty());
 
-        // when & then
+        // expected
         assertThrows(RuntimeException.class, () -> productService.findById(id));
     }
 

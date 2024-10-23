@@ -1,4 +1,4 @@
-package io.hhplus.commerce.presentation.dto;
+package io.hhplus.commerce.presentation.controller.product.dto;
 
 import io.hhplus.commerce.domain.entity.Product;
 import io.swagger.v3.oas.annotations.media.Schema;

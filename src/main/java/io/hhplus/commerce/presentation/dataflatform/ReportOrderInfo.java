@@ -1,6 +1,6 @@
 package io.hhplus.commerce.presentation.dataflatform;
 
-import io.hhplus.commerce.presentation.dto.OrderInfoToDataPlatformDto;
+import io.hhplus.commerce.presentation.dataflatform.dto.OrderInfoToDataPlatformDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

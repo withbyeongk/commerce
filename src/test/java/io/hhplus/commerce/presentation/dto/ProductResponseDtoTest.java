@@ -1,6 +1,7 @@
 package io.hhplus.commerce.presentation.dto;
 
 import io.hhplus.commerce.domain.entity.Product;
+import io.hhplus.commerce.presentation.controller.product.dto.ProductResponseDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

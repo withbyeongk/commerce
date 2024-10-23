@@ -1,8 +1,8 @@
-package io.hhplus.commerce.presentation.controller;
+package io.hhplus.commerce.presentation.controller.product;
 
 import io.hhplus.commerce.application.service.ProductService;
-import io.hhplus.commerce.presentation.dto.ProductRequestDto;
-import io.hhplus.commerce.presentation.dto.ProductResponseDto;
+import io.hhplus.commerce.presentation.controller.product.dto.ProductRequestDto;
+import io.hhplus.commerce.presentation.controller.product.dto.ProductResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;

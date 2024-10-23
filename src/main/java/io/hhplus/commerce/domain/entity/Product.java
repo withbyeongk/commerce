@@ -1,7 +1,7 @@
 package io.hhplus.commerce.domain.entity;
 
-import io.hhplus.commerce.presentation.dto.ProductRequestDto;
-import io.hhplus.commerce.presentation.dto.ProductResponseDto;
+import io.hhplus.commerce.presentation.controller.product.dto.ProductRequestDto;
+import io.hhplus.commerce.presentation.controller.product.dto.ProductResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
