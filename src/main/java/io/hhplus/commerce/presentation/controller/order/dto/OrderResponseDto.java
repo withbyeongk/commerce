@@ -1,5 +1,6 @@
-package io.hhplus.commerce.presentation.dto;
+package io.hhplus.commerce.presentation.controller.order.dto;
 
+import io.hhplus.commerce.presentation.dataflatform.dto.OrderInfoToDataPlatformDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;

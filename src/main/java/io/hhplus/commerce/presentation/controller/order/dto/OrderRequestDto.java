@@ -1,4 +1,4 @@
-package io.hhplus.commerce.presentation.dto;
+package io.hhplus.commerce.presentation.controller.order.dto;
 
 import java.io.Serializable;
 import java.util.List;

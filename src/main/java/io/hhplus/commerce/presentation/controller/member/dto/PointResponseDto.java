@@ -1,4 +1,4 @@
-package io.hhplus.commerce.presentation.dto;
+package io.hhplus.commerce.presentation.controller.member.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

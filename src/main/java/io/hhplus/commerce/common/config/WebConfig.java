@@ -1,4 +1,4 @@
-package io.hhplus.commerce.config;
+package io.hhplus.commerce.common.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode;

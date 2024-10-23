@@ -5,9 +5,9 @@ import io.hhplus.commerce.domain.entity.Product;
 import io.hhplus.commerce.infra.repository.CartRepository;
 import io.hhplus.commerce.infra.repository.MemberRepository;
 import io.hhplus.commerce.infra.repository.ProductRepository;
-import io.hhplus.commerce.presentation.dto.CartPutInDto;
-import io.hhplus.commerce.presentation.dto.ChangeQuantityDto;
-import io.hhplus.commerce.presentation.dto.ProductResponseDto;
+import io.hhplus.commerce.presentation.controller.cart.dto.CartPutInDto;
+import io.hhplus.commerce.presentation.controller.cart.dto.ChangeQuantityDto;
+import io.hhplus.commerce.presentation.controller.product.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

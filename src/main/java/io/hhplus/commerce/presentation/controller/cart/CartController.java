@@ -1,9 +1,9 @@
-package io.hhplus.commerce.presentation.controller;
+package io.hhplus.commerce.presentation.controller.cart;
 
 import io.hhplus.commerce.application.service.CartService;
-import io.hhplus.commerce.presentation.dto.CartPutInDto;
-import io.hhplus.commerce.presentation.dto.ChangeQuantityDto;
-import io.hhplus.commerce.presentation.dto.ProductResponseDto;
+import io.hhplus.commerce.presentation.controller.cart.dto.CartPutInDto;
+import io.hhplus.commerce.presentation.controller.cart.dto.ChangeQuantityDto;
+import io.hhplus.commerce.presentation.controller.product.dto.ProductResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController

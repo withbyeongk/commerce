@@ -6,9 +6,9 @@ import io.hhplus.commerce.domain.entity.Product;
 import io.hhplus.commerce.infra.repository.CartRepository;
 import io.hhplus.commerce.infra.repository.MemberRepository;
 import io.hhplus.commerce.infra.repository.ProductRepository;
-import io.hhplus.commerce.presentation.dto.CartPutInDto;
-import io.hhplus.commerce.presentation.dto.ChangeQuantityDto;
-import io.hhplus.commerce.presentation.dto.ProductResponseDto;
+import io.hhplus.commerce.presentation.controller.cart.dto.CartPutInDto;
+import io.hhplus.commerce.presentation.controller.cart.dto.ChangeQuantityDto;
+import io.hhplus.commerce.presentation.controller.product.dto.ProductResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -80,8 +80,8 @@ class CartServiceUnitTest {
         // when
         when(memberRepository.findById(dto.memberId())).thenReturn(Optional.empty());
 
-        // then
-        assertThrows(IllegalArgumentException.class, () -> {
+        // expected
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
             cartService.putIn(dto);
         });
     }

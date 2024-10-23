@@ -4,7 +4,7 @@ import io.hhplus.commerce.domain.entity.Member;
 import io.hhplus.commerce.domain.entity.Point;
 import io.hhplus.commerce.infra.repository.MemberRepository;
 import io.hhplus.commerce.infra.repository.PointRepository;
-import io.hhplus.commerce.presentation.dto.ChargePointDto;
+import io.hhplus.commerce.presentation.controller.member.dto.ChargePointDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
