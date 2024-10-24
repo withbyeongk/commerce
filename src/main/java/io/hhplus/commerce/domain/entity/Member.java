@@ -62,6 +62,11 @@ public class Member {
         log.info("MEMBER ::.사용금액 : {}, 잔액 : {}", points, this.point);
     }
 
+    public void update(int point) {
+        this.point = point;
+        log.info("MEMBER :: 업데이트 :: 잔액 : {}", this.point);
+    }
+
     public PointResponseDto toResponseDto() {
         return new PointResponseDto(id, point);
     }

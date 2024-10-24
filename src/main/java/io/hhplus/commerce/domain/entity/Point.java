@@ -46,4 +46,12 @@ public class Point {
         this.point += point;
         log.info("POINT :: 충전금액 : {}, 잔액 : {}", point, this.point);
     }
+
+    public void use(int point) {
+        if (point < 1) {
+            throw new CommerceException(CommerceErrorCodes.INVALID_ARGUMENTS_POINT);
+        }
+        this.point -= point;
+        log.info("POINT :: 사용금액 : {}, 잔액 : {}", point, this.point);
+    }
 }

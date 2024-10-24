@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +25,7 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final ProductStockRepository productStockRepository;
     private final ReportOrderInfo reportOrderInfo;
+    private final PointRepository pointRepository;
 
     @Transactional(rollbackFor = {Exception.class})
     public OrderResponseDto makeOrder(OrderRequestDto dto) {
@@ -31,7 +33,15 @@ public class OrderService {
         Member member = memberRepository.findById(dto.memberId())
                 .orElseThrow(() -> new CommerceException(CommerceErrorCodes.MEMBER_NOT_FOUND));
 
-        int memberPoint = member.getPoint();
+        int memberPoint = 0;
+
+        Optional<Point> optionalPoint = pointRepository.findById(member.getId());
+        if (optionalPoint.isEmpty()) {
+            Point point = new Point(member.getId());
+            pointRepository.save(point);
+        } else {
+            memberPoint = optionalPoint.get().getPoint();
+        }
 
         List<Product> products = dto.products().stream()
                 .map(orderItemDto -> productRepository.findById(orderItemDto.productId()).orElseThrow(
@@ -58,7 +68,14 @@ public class OrderService {
         }
 
         // 잔액 감소
-        member.use(totalPrice);
+        Point point = optionalPoint.get();
+        point.use(totalPrice);
+        pointRepository.save(point);
+
+        member.update(point.getPoint());
+        memberRepository.save(member);
+
+
 
         // 주문 등록
         Order order = new Order(null, member.getId(), totalPrice, null, null, LocalDateTime.now());
