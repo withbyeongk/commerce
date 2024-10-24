@@ -3,6 +3,7 @@ package io.hhplus.commerce.application.service;
 import io.hhplus.commerce.common.exception.CommerceErrorCodes;
 import io.hhplus.commerce.common.exception.CommerceException;
 import io.hhplus.commerce.domain.entity.Member;
+import io.hhplus.commerce.domain.entity.Point;
 import io.hhplus.commerce.domain.entity.Product;
 import io.hhplus.commerce.domain.entity.ProductStock;
 import io.hhplus.commerce.infra.repository.*;
@@ -52,6 +53,9 @@ class OrderServiceUnitTest {
     private OrderItemRepository orderItemRepository;
 
     @Mock
+    private PointRepository pointRepository;
+
+    @Mock
     private ReportOrderInfo reportOrderInfo;
 
     @BeforeEach
@@ -94,6 +98,7 @@ class OrderServiceUnitTest {
         OrderRequestDto dto = prepareOrderRequestDto();
         when(memberRepository.findById(anyLong())).thenReturn(Optional.of(new Member()));
         when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
+        when(pointRepository.findById(null)).thenReturn(Optional.empty());
 
         // expected
         CommerceException e = assertThrows(CommerceException.class, () -> {
@@ -132,8 +137,10 @@ class OrderServiceUnitTest {
         OrderRequestDto dto = prepareOrderRequestDto();
         Member member = new Member(1L, "회원", 1000, null, null, LocalDateTime.now());
         Product product = new Product(1L, "상품", 1000, 0, "상품설명", null, null, LocalDateTime.now());
+        Point point = new Point(1L, 1000);
         ProductStock productStock = new ProductStock(1L, 0);
         when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
+        when(pointRepository.findById(anyLong())).thenReturn(Optional.of(point));
         when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
         when(productStockRepository.findById(anyLong())).thenReturn(Optional.of(productStock));
 
@@ -153,9 +160,11 @@ class OrderServiceUnitTest {
         // given
         OrderRequestDto dto = prepareOrderRequestDto();
         Member member = new Member(dto.memberId(), "회원", 10000, null, null, LocalDateTime.now());
+        Point point = new Point(1L, 1000);
         Product product = new Product(1L, "상품", 1000, 0, "상품설명", null, null, LocalDateTime.now());
         ProductStock productStock = new ProductStock(1L, 10);
         when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
+        when(pointRepository.findById(anyLong())).thenReturn(Optional.of(point));
         when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
         when(productStockRepository.findById(anyLong())).thenReturn(Optional.of(productStock));
         when(orderRepository.save(any())).thenAnswer(i -> i.getArguments()[0]);

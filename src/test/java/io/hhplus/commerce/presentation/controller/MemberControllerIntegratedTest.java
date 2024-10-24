@@ -49,12 +49,13 @@ class MemberControllerIntegratedTest {
     public void shouldChargePoint() {
         // given
         int beforePoint = 10000;
+        int cargePoint = 1000;
         Member member = new Member(null, "회원1", beforePoint, null, null, LocalDateTime.now());
         Member savedMember = memberRepository.save(member);
-        Point point = new Point(savedMember.getId(), 50);
-        Point savedPoint = pointRepository.save(point);
+        Point point = new Point(savedMember.getId(), beforePoint);
+        pointRepository.save(point);
 
-        ChargePointDto dto = new ChargePointDto(savedMember.getId(), 50); // 임시 값
+        ChargePointDto dto = new ChargePointDto(savedMember.getId(), cargePoint);
 
         HttpEntity<ChargePointDto> request = new HttpEntity<>(dto);
 
@@ -68,8 +69,10 @@ class MemberControllerIntegratedTest {
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
-        Member updatedMember = memberRepository.findById(savedMember.getId()).orElse(null);
-        assertEquals(dto.points() + beforePoint, updatedMember.getPoint());
+        int updatedMemberPoint = memberRepository.findById(savedMember.getId()).get().getPoint();
+        int updatedPoint = pointRepository.findById(savedMember.getId()).get().getPoint();
+        assertEquals(cargePoint + beforePoint, updatedMemberPoint);
+        assertEquals(cargePoint + beforePoint, updatedPoint);
     }
 
     @Test
