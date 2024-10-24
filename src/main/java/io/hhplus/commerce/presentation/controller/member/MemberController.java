@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
     private final MemberService memberService;
 
-    @Operation(summary = "잔액 조회")
+    @Operation(summary = "잔액 충전")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(mediaType = "application/json"))
     @PostMapping("/points")
     public void chargePoint(@RequestBody ChargePointDto dto) {
         memberService.chargePoint(dto);
     }
 
-    @Operation(summary = "잔액 충전")
+    @Operation(summary = "잔액 조회")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(mediaType = "application/json", schema = @Schema(implementation = PointResponseDto.class)))
     @GetMapping("/{memberId}/points")
     public PointResponseDto getPoint(@PathVariable (name = "memberId")Long memberId) {
