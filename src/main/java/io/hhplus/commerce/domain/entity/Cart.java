@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -13,6 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Table(name = "cart")
 @NoArgsConstructor
 @AllArgsConstructor
+@Slf4j
 @EntityListeners(AuditingEntityListener.class)
 public class Cart {
 
@@ -55,6 +57,7 @@ public class Cart {
             throw new CommerceException(CommerceErrorCodes.INVALID_ARGUMENTS_QUANTITY);
         }
         this.quantity += quantity;
+        log.info("CART :: 추가할 상품 수량 : {}, 담긴 상품 수량 : {}", quantity, this.quantity);
     }
 
     public void minus(int quantity) {
@@ -67,6 +70,7 @@ public class Cart {
         }
 
         this.quantity -= quantity;
+        log.info("CART :: 감소할 상품 수량 : {}, 담긴 상품 수량 : {}", quantity, this.quantity);
     }
 
     public void changeQuantity(int quantity) {
@@ -74,5 +78,6 @@ public class Cart {
             throw new CommerceException(CommerceErrorCodes.INVALID_ARGUMENTS_QUANTITY);
         }
         this.quantity = quantity;
+        log.info("CART :: 변경할 상품 수량 : {}, 담긴 상품 수량 : {}", quantity, this.quantity);
     }
 }

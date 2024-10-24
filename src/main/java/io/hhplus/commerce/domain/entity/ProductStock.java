@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -13,6 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Table(name = "product_stock")
 @NoArgsConstructor
 @AllArgsConstructor
+@Slf4j
 @EntityListeners(AuditingEntityListener.class)
 public class ProductStock {
     @Id
@@ -30,6 +32,7 @@ public class ProductStock {
             throw new CommerceException(CommerceErrorCodes.INSUFFICIENT_STOCK);
         }
         this.stock -= quantity;
+        log.info("PRODUCT STOCK :: 상품 감소량 : {}, 상품 재고 : {}", quantity, this.stock);
     }
 
     public void plus(int quantity) {
@@ -37,6 +40,7 @@ public class ProductStock {
             throw new CommerceException(CommerceErrorCodes.INVALID_ARGUMENTS_QUANTITY);
         }
         this.stock += quantity;
+        log.info("PRODUCT STOCK :: 상품 추가량 : {}, 상품 재고 : {}", quantity, this.stock);
     }
 
 }

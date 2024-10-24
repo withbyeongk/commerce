@@ -11,12 +11,14 @@ import io.hhplus.commerce.presentation.controller.cart.dto.CartPutInDto;
 import io.hhplus.commerce.presentation.controller.cart.dto.ChangeQuantityDto;
 import io.hhplus.commerce.presentation.controller.product.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class CartService {
     private final CartRepository cartRepository;
@@ -43,6 +45,7 @@ public class CartService {
         List<Cart> carts = cartRepository.findByMemberId(memberId);
 
         if (carts.isEmpty()) {
+            log.info("카트에 담겨있는 상품이 없습니다.");
             return response;
         }
 
@@ -65,9 +68,11 @@ public class CartService {
         int beforeQuantity = cart.getQuantity();
 
         if (beforeQuantity == dto.quantity()) {
+            log.info("수량 변경할 값이 이전과 같아서 처리되지 않습니다.");
             return ;
         } else if (beforeQuantity == 0) {
             cartRepository.deleteById(cart.getId());
+            log.info("상품의 수를 0으로 변경하는 것은 장바구니에서 상품 삭제처리됩니다.");
             return ;
         }
         cart.changeQuantity(dto.quantity());

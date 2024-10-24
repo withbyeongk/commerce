@@ -9,11 +9,13 @@ import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Slf4j
 public class Point {
 
     private static final int DEFAULT_POINTS = 0;
@@ -42,5 +44,6 @@ public class Point {
             throw new CommerceException(CommerceErrorCodes.INVALID_ARGUMENTS_POINT);
         }
         this.point += point;
+        log.info("POINT :: 충전금액 : {}, 잔액 : {}", point, this.point);
     }
 }

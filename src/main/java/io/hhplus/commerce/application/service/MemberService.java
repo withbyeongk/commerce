@@ -9,11 +9,13 @@ import io.hhplus.commerce.infra.repository.PointRepository;
 import io.hhplus.commerce.presentation.controller.member.dto.ChargePointDto;
 import io.hhplus.commerce.presentation.controller.member.dto.PointResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -34,6 +36,7 @@ public class MemberService {
 
         // 회원의 포인트가 존재하지 않을 경우 기본값으로 설정하여 저장
         if (!optionalPoint.isPresent()) {
+            log.info("잔액 충전 내역 없음 : {}", dto.memberId());
             point = new Point(dto.memberId());
             pointRepository.save(point);
         }
