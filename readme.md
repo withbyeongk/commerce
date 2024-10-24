@@ -106,6 +106,5 @@
 - Database : H2 (추후 Mysql 8.0로 교체)
 - Test : JUnit 5 / AssertJ 3.25.3
 
-
-
-
+# 10. Chapter 2 회고
+[Chapter 2 회고 보러가기](docs/week5-retrospect.md)

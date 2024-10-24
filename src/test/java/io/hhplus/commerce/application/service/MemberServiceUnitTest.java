@@ -1,5 +1,7 @@
 package io.hhplus.commerce.application.service;
 
+import io.hhplus.commerce.common.exception.CommerceErrorCodes;
+import io.hhplus.commerce.common.exception.CommerceException;
 import io.hhplus.commerce.domain.entity.Member;
 import io.hhplus.commerce.domain.entity.Point;
 import io.hhplus.commerce.infra.repository.MemberRepository;
@@ -18,6 +20,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,10 +49,14 @@ class MemberServiceUnitTest {
         // when
         when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
 
-        // then
-        assertThrows(IllegalArgumentException.class, () -> {
+        // expected
+        CommerceException e = assertThrows(CommerceException.class, () -> {
             memberService.chargePoint(dto);
         });
+
+        // then
+        verify(memberRepository).findById(memberId);
+        assertEquals(CommerceErrorCodes.MEMBER_NOT_FOUND, e.getErrorCode());
     }
 
     @Test
@@ -82,9 +89,13 @@ class MemberServiceUnitTest {
         // when
         when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
 
-        // then
-        assertThrows(IllegalArgumentException.class, () -> {
+        // expected
+        CommerceException e = assertThrows(CommerceException.class, () -> {
             memberService.getPoint(memberId);
         });
+
+        // then
+        verify(memberRepository).findById(memberId);
+        assertEquals(CommerceErrorCodes.MEMBER_NOT_FOUND, e.getErrorCode());
     }
 }
