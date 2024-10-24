@@ -44,8 +44,7 @@ public class MemberControllerConcurrencyTest {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    @DisplayName("잔액 충전 동시성 테스트 : 실패 (잔액 충전의 경우엔 회원 한명이 자신의 리소스에만 접근하며 요청이 매우 빠른 시간 내에 많이 몰릴 것이라 생각지 않아서 비관적 락을 적용하지 않았음)")
-    @Disabled
+    @DisplayName("잔액 충전 동시성 테스트 성공.")
     public void chargePointConcurrencyTest() throws Exception {
         Member member = new Member(null, "회원1", 0, null, null, LocalDateTime.now());
         Member savedMember = memberRepository.save(member);

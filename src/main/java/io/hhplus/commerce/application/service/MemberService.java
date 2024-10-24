@@ -49,7 +49,7 @@ public class MemberService {
 
         // 회원 테이블에도 업데이트
         Member member = optionalMember.get();
-        member.charge(dto.points());
+        member.update(point.getPoint());
         memberRepository.save(member);
 
         return point.getPoint();
