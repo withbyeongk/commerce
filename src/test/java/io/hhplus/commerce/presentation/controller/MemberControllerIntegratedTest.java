@@ -7,6 +7,7 @@ import io.hhplus.commerce.infra.repository.PointRepository;
 import io.hhplus.commerce.presentation.controller.member.dto.ChargePointDto;
 import io.hhplus.commerce.presentation.controller.member.dto.PointResponseDto;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -44,6 +45,7 @@ class MemberControllerIntegratedTest {
     }
 
     @Test
+    @DisplayName("잔액 충전 성공")
     public void shouldChargePoint() {
         // given
         int beforePoint = 10000;
@@ -71,6 +73,7 @@ class MemberControllerIntegratedTest {
     }
 
     @Test
+    @DisplayName("잔액 조회 성공")
     public void shouldGetPoint() {
         // given
         Member member = new Member(null, "회원1", 10000, null, null, LocalDateTime.now());
@@ -95,5 +98,7 @@ class MemberControllerIntegratedTest {
         assertNotNull(dto);
         assertEquals(savedMember.getPoint(), dto.point());
     }
+
+
 
 }
