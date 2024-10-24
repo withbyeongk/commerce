@@ -1,5 +1,7 @@
 package io.hhplus.commerce.application.service;
 
+import io.hhplus.commerce.common.exception.CommerceErrorCodes;
+import io.hhplus.commerce.common.exception.CommerceException;
 import io.hhplus.commerce.domain.entity.Product;
 import io.hhplus.commerce.infra.repository.ProductRepository;
 import io.hhplus.commerce.presentation.controller.product.dto.ProductRequestDto;
@@ -27,7 +29,7 @@ public class ProductService {
 
     public ProductResponseDto findById(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new CommerceException(CommerceErrorCodes.PRODUCT_NOT_FOUND));
         return new ProductResponseDto(product);
     }
 

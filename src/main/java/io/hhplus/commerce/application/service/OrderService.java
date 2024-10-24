@@ -1,10 +1,12 @@
 package io.hhplus.commerce.application.service;
 
+import io.hhplus.commerce.common.exception.CommerceErrorCodes;
+import io.hhplus.commerce.common.exception.CommerceException;
 import io.hhplus.commerce.domain.entity.*;
 import io.hhplus.commerce.infra.repository.*;
-import io.hhplus.commerce.presentation.dataflatform.ReportOrderInfo;
 import io.hhplus.commerce.presentation.controller.order.dto.OrderRequestDto;
 import io.hhplus.commerce.presentation.controller.order.dto.OrderResponseDto;
+import io.hhplus.commerce.presentation.dataflatform.ReportOrderInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,13 +29,13 @@ public class OrderService {
     public OrderResponseDto makeOrder(OrderRequestDto dto) {
 
         Member member = memberRepository.findById(dto.memberId())
-                .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
+                .orElseThrow(() -> new CommerceException(CommerceErrorCodes.MEMBER_NOT_FOUND));
 
         int memberPoint = member.getPoint();
 
         List<Product> products = dto.products().stream()
                 .map(orderItemDto -> productRepository.findById(orderItemDto.productId()).orElseThrow(
-                        () -> new RuntimeException("찾을 수 없는 상품 ID : " + orderItemDto.productId())))
+                        () -> new CommerceException(CommerceErrorCodes.PRODUCT_NOT_FOUND)))
                 .collect(Collectors.toList());
 
         int totalPrice = dto.products().stream()
@@ -43,7 +45,7 @@ public class OrderService {
                 .sum();
 
         if (totalPrice > memberPoint) {
-            throw new RuntimeException("잔액 부족으로 구매할 수 없습니다.");
+            throw new CommerceException(CommerceErrorCodes.INSUFFICIENT_POINT);
         }
 
         // 상품들 재고 확인
@@ -51,7 +53,7 @@ public class OrderService {
             ProductStock productStock = productStockRepository.findById(orderItemDto.productId()).get();
 
             if (productStock.getStock() < orderItemDto.amount()) {
-                throw new RuntimeException("상품 재고 부족: " + orderItemDto.productId());
+                throw new CommerceException(CommerceErrorCodes.INSUFFICIENT_STOCK);
             }
         }
 

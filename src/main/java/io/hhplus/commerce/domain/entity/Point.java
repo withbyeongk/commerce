@@ -1,5 +1,7 @@
 package io.hhplus.commerce.domain.entity;
 
+import io.hhplus.commerce.common.exception.CommerceErrorCodes;
+import io.hhplus.commerce.common.exception.CommerceException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -37,7 +39,7 @@ public class Point {
 
     public void charge(int point) {
         if (point < 1) {
-            throw new IllegalArgumentException("충전 포인트는 양수여야 합니다.");
+            throw new CommerceException(CommerceErrorCodes.INVALID_ARGUMENTS_POINT);
         }
         this.point += point;
     }

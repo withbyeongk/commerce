@@ -1,5 +1,7 @@
 package io.hhplus.commerce.application.service;
 
+import io.hhplus.commerce.common.exception.CommerceErrorCodes;
+import io.hhplus.commerce.common.exception.CommerceException;
 import io.hhplus.commerce.domain.entity.Cart;
 import io.hhplus.commerce.domain.entity.Product;
 import io.hhplus.commerce.infra.repository.CartRepository;
@@ -23,8 +25,8 @@ public class CartService {
 
     public Long putIn(CartPutInDto dto) {
 
-        memberRepository.findById(dto.memberId()).orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
-        productRepository.findById(dto.productId()).orElseThrow(() -> new IllegalArgumentException("상품이 존재하지 않습니다."));
+        memberRepository.findById(dto.memberId()).orElseThrow(() -> new CommerceException(CommerceErrorCodes.MEMBER_NOT_FOUND));
+        productRepository.findById(dto.productId()).orElseThrow(() -> new CommerceException(CommerceErrorCodes.PRODUCT_NOT_FOUND));
 
         Cart cart = new Cart(dto.memberId(), dto.productId());
         cartRepository.save(cart);
@@ -58,7 +60,7 @@ public class CartService {
     }
 
     public void changeQuantity(ChangeQuantityDto dto) {
-        Cart cart = cartRepository.findById(dto.cartId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 장바구니 ID입니다."));
+        Cart cart = cartRepository.findById(dto.cartId()).orElseThrow(() -> new CommerceException(CommerceErrorCodes.CART_NOT_FOUND));
 
         int beforeQuantity = cart.getQuantity();
 

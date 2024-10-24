@@ -1,5 +1,7 @@
 package io.hhplus.commerce.domain.entity;
 
+import io.hhplus.commerce.common.exception.CommerceErrorCodes;
+import io.hhplus.commerce.common.exception.CommerceException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,17 +24,17 @@ public class ProductStock {
 
     public void minus(int quantity) {
         if (quantity <= 0) {
-            throw new IllegalArgumentException("재고 감소 수량은 양수여야 합니다..");
+            throw new CommerceException(CommerceErrorCodes.INVALID_ARGUMENTS_QUANTITY);
         }
         if (this.stock < quantity) {
-            throw new IllegalArgumentException("재고가 부족합니다.");
+            throw new CommerceException(CommerceErrorCodes.INSUFFICIENT_STOCK);
         }
         this.stock -= quantity;
     }
 
     public void plus(int quantity) {
         if (quantity <= 0) {
-            throw new IllegalArgumentException("재고 추가 수량은 양수여야 합니다..");
+            throw new CommerceException(CommerceErrorCodes.INVALID_ARGUMENTS_QUANTITY);
         }
         this.stock += quantity;
     }

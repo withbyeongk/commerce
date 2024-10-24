@@ -1,5 +1,7 @@
 package io.hhplus.commerce.application.service;
 
+import io.hhplus.commerce.common.exception.CommerceErrorCodes;
+import io.hhplus.commerce.common.exception.CommerceException;
 import io.hhplus.commerce.domain.entity.Cart;
 import io.hhplus.commerce.domain.entity.Member;
 import io.hhplus.commerce.domain.entity.Product;
@@ -81,9 +83,13 @@ class CartServiceUnitTest {
         when(memberRepository.findById(dto.memberId())).thenReturn(Optional.empty());
 
         // expected
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
+        CommerceException e = assertThrows(CommerceException.class, () -> {
             cartService.putIn(dto);
         });
+
+        // then
+        verify(memberRepository).findById(dto.memberId());
+        assertEquals(CommerceErrorCodes.MEMBER_NOT_FOUND, e.getErrorCode());
     }
 
 
@@ -98,10 +104,16 @@ class CartServiceUnitTest {
         when(memberRepository.findById(dto.memberId())).thenReturn(Optional.of(member));
         when(productRepository.findById(dto.productId())).thenReturn(Optional.empty());
 
-        // then
-        assertThrows(IllegalArgumentException.class, () -> {
+        // expected
+        CommerceException e = assertThrows(CommerceException.class, () -> {
             cartService.putIn(dto);
         });
+
+        // then
+        verify(memberRepository).findById(dto.memberId());
+        verify(productRepository).findById(dto.productId());
+        assertEquals(CommerceErrorCodes.PRODUCT_NOT_FOUND, e.getErrorCode());
+
     }
 
     @Test
@@ -127,6 +139,9 @@ class CartServiceUnitTest {
         List<ProductResponseDto> result = cartService.getProductsInCart(memberId);
 
         // then
+        verify(cartRepository).findByMemberId(memberId);
+        verify(productRepository).findById(cart1.getProductId());
+        verify(productRepository).findById(cart2.getProductId());
         assertEquals(2, result.size());
         assertEquals(product1.getName(), result.get(0).name());
         assertEquals(product2.getName(), result.get(1).name());
@@ -152,6 +167,7 @@ class CartServiceUnitTest {
         cartService.changeQuantity(dto);
 
         // then
+        verify(cartRepository).findById(cartId);
         verify(cartRepository).save(cart);
         assertEquals(afterQuantity, cart.getQuantity());
     }

@@ -1,9 +1,12 @@
 package io.hhplus.commerce.domain.entity;
 
+import io.hhplus.commerce.common.exception.CommerceErrorCodes;
+import io.hhplus.commerce.common.exception.CommerceException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PointTest {
 
@@ -26,12 +29,16 @@ class PointTest {
         // given
         Point point = new Point(1L, 100);
 
-        // then
-        assertThrows(IllegalArgumentException.class, () -> {
+        // expected
+        CommerceException e1 = assertThrows(CommerceException.class, () -> {
             point.charge(-1);
         });
-        assertThrows(IllegalArgumentException.class, () -> {
+        CommerceException e2 = assertThrows(CommerceException.class, () -> {
             point.charge(0);
         });
+
+        // then
+        assertEquals(CommerceErrorCodes.INVALID_ARGUMENTS_POINT, e1.getErrorCode());
+        assertEquals(CommerceErrorCodes.INVALID_ARGUMENTS_POINT, e2.getErrorCode());
     }
 }
