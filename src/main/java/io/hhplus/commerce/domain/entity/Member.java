@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @Table(name = "member")
 @NoArgsConstructor
 @AllArgsConstructor
+@Slf4j
 @EntityListeners(AuditingEntityListener.class)
 public class Member {
     @Id
@@ -52,10 +54,12 @@ public class Member {
 
     public void charge(int points) {
         this.point += points;
+        log.info("MEMBER :: 충전금액 : {}, 잔액 : {}", points, this.point);
     }
 
     public void use(int points) {
         this.point -= points;
+        log.info("MEMBER ::.사용금액 : {}, 잔액 : {}", points, this.point);
     }
 
     public PointResponseDto toResponseDto() {

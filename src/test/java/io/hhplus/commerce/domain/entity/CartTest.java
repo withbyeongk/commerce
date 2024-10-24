@@ -1,5 +1,7 @@
 package io.hhplus.commerce.domain.entity;
 
+import io.hhplus.commerce.common.exception.CommerceErrorCodes;
+import io.hhplus.commerce.common.exception.CommerceException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -28,11 +30,17 @@ class CartTest {
         Long productId = 2L;
         Cart cart = new Cart(memberId, productId);
 
-        // when
-        cart.plus(3);
+        // expected
+        CommerceException e1 = assertThrows(CommerceException.class, () -> {
+            cart.plus(0);
+        });
+        CommerceException e2 = assertThrows(CommerceException.class, () -> {
+            cart.plus(0);
+        });
 
         // then
-        assertEquals(4, cart.getQuantity());
+        assertEquals(CommerceErrorCodes.INVALID_ARGUMENTS_QUANTITY, e1.getErrorCode());
+        assertEquals(CommerceErrorCodes.INVALID_ARGUMENTS_QUANTITY, e2.getErrorCode());
     }
 
     @Test
@@ -44,11 +52,17 @@ class CartTest {
         int beforeAount = 5;
         Cart cart = new Cart(memberId, productId, beforeAount);
 
-        // when
-        cart.minus(3);
+        // expected
+        CommerceException e1 = assertThrows(CommerceException.class, () -> {
+            cart.minus(-1);
+        });
+        CommerceException e2 = assertThrows(CommerceException.class, () -> {
+            cart.minus(0);
+        });
 
         // then
-        assertEquals(2, cart.getQuantity());
+        assertEquals(CommerceErrorCodes.INVALID_ARGUMENTS_QUANTITY, e1.getErrorCode());
+        assertEquals(CommerceErrorCodes.INVALID_ARGUMENTS_QUANTITY, e2.getErrorCode());
     }
 
     @Test
@@ -60,7 +74,38 @@ class CartTest {
         int beforeAount = 5;
         Cart cart = new Cart(memberId, productId, beforeAount);
 
-        // when then
-        assertThrows(IllegalArgumentException.class, () -> cart.minus(5));
+        // expected
+        CommerceException e1 = assertThrows(CommerceException.class, () -> {
+            cart.minus(5);
+        });
+        CommerceException e2 = assertThrows(CommerceException.class, () -> {
+            cart.minus(6);
+        });
+
+        // then
+        assertEquals(CommerceErrorCodes.INVALID_EXCEED_QUANTITY, e1.getErrorCode());
+        assertEquals(CommerceErrorCodes.INVALID_EXCEED_QUANTITY, e2.getErrorCode());
     }
+
+    @Test
+    @DisplayName("카트에 담긴 상품의 개수를 변경할 때 양수가 아닌 값이 입력되면 에러가 발생합니다.")
+    void invalidQuantityInChangeQuantity() {
+        // given
+        Long memberId = 1L;
+        Long productId = 2L;
+        Cart cart = new Cart(memberId, productId);
+
+        // expected
+        CommerceException e1 = assertThrows(CommerceException.class, () -> {
+            cart.changeQuantity(-1);
+        });
+        CommerceException e2 = assertThrows(CommerceException.class, () -> {
+            cart.changeQuantity(0);
+        });
+
+        // then
+        assertEquals(CommerceErrorCodes.INVALID_ARGUMENTS_QUANTITY, e1.getErrorCode());
+        assertEquals(CommerceErrorCodes.INVALID_ARGUMENTS_QUANTITY, e2.getErrorCode());
+    }
+
 }

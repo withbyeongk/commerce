@@ -1,5 +1,7 @@
 package io.hhplus.commerce.application.service;
 
+import io.hhplus.commerce.common.exception.CommerceErrorCodes;
+import io.hhplus.commerce.common.exception.CommerceException;
 import io.hhplus.commerce.infra.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -36,7 +39,12 @@ class ProductServiceTest {
         when(productRepository.findById(id)).thenReturn(Optional.empty());
 
         // expected
-        assertThrows(RuntimeException.class, () -> productService.findById(id));
+        CommerceException e = assertThrows(CommerceException.class, () -> {
+            productService.findById(id);
+        });
+
+        // then
+        assertEquals(CommerceErrorCodes.PRODUCT_NOT_FOUND, e.getErrorCode());
     }
 
 }
