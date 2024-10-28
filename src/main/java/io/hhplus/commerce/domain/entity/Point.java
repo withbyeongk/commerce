@@ -1,5 +1,7 @@
 package io.hhplus.commerce.domain.entity;
 
+import io.hhplus.commerce.common.exception.CommerceErrorCodes;
+import io.hhplus.commerce.common.exception.CommerceException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -7,11 +9,13 @@ import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Slf4j
 public class Point {
 
     private static final int DEFAULT_POINTS = 0;
@@ -37,8 +41,17 @@ public class Point {
 
     public void charge(int point) {
         if (point < 1) {
-            throw new IllegalArgumentException("충전 포인트는 양수여야 합니다.");
+            throw new CommerceException(CommerceErrorCodes.INVALID_ARGUMENTS_POINT);
         }
         this.point += point;
+        log.info("POINT :: 충전금액 : {}, 잔액 : {}", point, this.point);
+    }
+
+    public void use(int point) {
+        if (point < 1) {
+            throw new CommerceException(CommerceErrorCodes.INVALID_ARGUMENTS_POINT);
+        }
+        this.point -= point;
+        log.info("POINT :: 사용금액 : {}, 잔액 : {}", point, this.point);
     }
 }

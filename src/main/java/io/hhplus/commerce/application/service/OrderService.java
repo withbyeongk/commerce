@@ -1,16 +1,19 @@
 package io.hhplus.commerce.application.service;
 
+import io.hhplus.commerce.common.exception.CommerceErrorCodes;
+import io.hhplus.commerce.common.exception.CommerceException;
 import io.hhplus.commerce.domain.entity.*;
 import io.hhplus.commerce.infra.repository.*;
-import io.hhplus.commerce.presentation.dataflatform.ReportOrderInfo;
 import io.hhplus.commerce.presentation.controller.order.dto.OrderRequestDto;
 import io.hhplus.commerce.presentation.controller.order.dto.OrderResponseDto;
+import io.hhplus.commerce.presentation.dataflatform.ReportOrderInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,18 +25,27 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final ProductStockRepository productStockRepository;
     private final ReportOrderInfo reportOrderInfo;
+    private final PointRepository pointRepository;
 
     @Transactional(rollbackFor = {Exception.class})
     public OrderResponseDto makeOrder(OrderRequestDto dto) {
 
         Member member = memberRepository.findById(dto.memberId())
-                .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
+                .orElseThrow(() -> new CommerceException(CommerceErrorCodes.MEMBER_NOT_FOUND));
 
-        int memberPoint = member.getPoint();
+        int memberPoint = 0;
+
+        Optional<Point> optionalPoint = pointRepository.findById(member.getId());
+        if (optionalPoint.isEmpty()) {
+            Point point = new Point(member.getId());
+            pointRepository.save(point);
+        } else {
+            memberPoint = optionalPoint.get().getPoint();
+        }
 
         List<Product> products = dto.products().stream()
                 .map(orderItemDto -> productRepository.findById(orderItemDto.productId()).orElseThrow(
-                        () -> new RuntimeException("찾을 수 없는 상품 ID : " + orderItemDto.productId())))
+                        () -> new CommerceException(CommerceErrorCodes.PRODUCT_NOT_FOUND)))
                 .collect(Collectors.toList());
 
         int totalPrice = dto.products().stream()
@@ -43,7 +55,7 @@ public class OrderService {
                 .sum();
 
         if (totalPrice > memberPoint) {
-            throw new RuntimeException("잔액 부족으로 구매할 수 없습니다.");
+            throw new CommerceException(CommerceErrorCodes.INSUFFICIENT_POINT);
         }
 
         // 상품들 재고 확인
@@ -51,12 +63,19 @@ public class OrderService {
             ProductStock productStock = productStockRepository.findById(orderItemDto.productId()).get();
 
             if (productStock.getStock() < orderItemDto.amount()) {
-                throw new RuntimeException("상품 재고 부족: " + orderItemDto.productId());
+                throw new CommerceException(CommerceErrorCodes.INSUFFICIENT_STOCK);
             }
         }
 
         // 잔액 감소
-        member.use(totalPrice);
+        Point point = optionalPoint.get();
+        point.use(totalPrice);
+        pointRepository.save(point);
+
+        member.update(point.getPoint());
+        memberRepository.save(member);
+
+
 
         // 주문 등록
         Order order = new Order(null, member.getId(), totalPrice, null, null, LocalDateTime.now());

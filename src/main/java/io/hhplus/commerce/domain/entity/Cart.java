@@ -1,9 +1,12 @@
 package io.hhplus.commerce.domain.entity;
 
+import io.hhplus.commerce.common.exception.CommerceErrorCodes;
+import io.hhplus.commerce.common.exception.CommerceException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -11,6 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Table(name = "cart")
 @NoArgsConstructor
 @AllArgsConstructor
+@Slf4j
 @EntityListeners(AuditingEntityListener.class)
 public class Cart {
 
@@ -50,27 +54,30 @@ public class Cart {
 
     public void plus(int quantity) {
         if (quantity <= 0) {
-            throw new IllegalArgumentException("상품 수를 추가할 때는 양수가 입력되어야 합니다.");
+            throw new CommerceException(CommerceErrorCodes.INVALID_ARGUMENTS_QUANTITY);
         }
         this.quantity += quantity;
+        log.info("CART :: 추가할 상품 수량 : {}, 담긴 상품 수량 : {}", quantity, this.quantity);
     }
 
     public void minus(int quantity) {
         if (quantity <= 0) {
-            throw new IllegalArgumentException("상품 수를 줄일 때는 양수가 입력되어야 합니다.");
+            throw new CommerceException(CommerceErrorCodes.INVALID_ARGUMENTS_QUANTITY);
         }
 
         if (this.quantity <= quantity) {
-            throw new IllegalArgumentException("현재 장바구니에 담긴 상품 수보다 더 많거나 같은 양을 꺼낼 수 없습니다.");
+            throw new CommerceException(CommerceErrorCodes.INVALID_EXCEED_QUANTITY);
         }
 
         this.quantity -= quantity;
+        log.info("CART :: 감소할 상품 수량 : {}, 담긴 상품 수량 : {}", quantity, this.quantity);
     }
 
     public void changeQuantity(int quantity) {
         if (quantity <= 0) {
-            throw new IllegalArgumentException("상품 수를 변경할 때는 양수가 입력되어야 합니다.");
+            throw new CommerceException(CommerceErrorCodes.INVALID_ARGUMENTS_QUANTITY);
         }
         this.quantity = quantity;
+        log.info("CART :: 변경할 상품 수량 : {}, 담긴 상품 수량 : {}", quantity, this.quantity);
     }
 }
