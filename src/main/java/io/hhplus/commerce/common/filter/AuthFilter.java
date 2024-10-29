@@ -26,6 +26,7 @@ public class AuthFilter implements Filter {
         for (String skip : skipPaths) {
             if (path.startsWith(skip)) {
                 log.info("---- AuthFilter :: skip path : {} ----", path);
+                log.info("---- AuthFilter :: request : {} ----", ((HttpServletRequest) request).getRequestURI());
                 filterChain.doFilter(request, response);
                 return;
             }

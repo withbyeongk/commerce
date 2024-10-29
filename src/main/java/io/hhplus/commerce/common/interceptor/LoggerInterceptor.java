@@ -13,8 +13,6 @@ public class LoggerInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("---------- LoggerInterceptor :: preHandle ----------");
 
-        log.info("---- LoggerInterceptor :: request : {} ----", request.getRequestURI());
-
         log.info("---------- LoggerInterceptor :: preHandle ----------");
         return true;
     }
