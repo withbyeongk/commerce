@@ -28,8 +28,7 @@ public class ProductService {
     }
 
     public ProductResponseDto findById(Long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new CommerceException(CommerceErrorCodes.PRODUCT_NOT_FOUND));
+        Product product = productRepository.findById(id).orElseThrow(() -> new CommerceException(CommerceErrorCodes.PRODUCT_NOT_FOUND));
         return new ProductResponseDto(product);
     }
 

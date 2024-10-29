@@ -26,8 +26,7 @@ public class MemberService {
     public int chargePoint(ChargePointDto dto) {
 
         // 회원 id 조회
-        Optional<Member> optionalMember = memberRepository.findById(dto.memberId());
-        optionalMember.orElseThrow(() -> new CommerceException(CommerceErrorCodes.MEMBER_NOT_FOUND));
+        Member member = memberRepository.findById(dto.memberId()).orElseThrow(() -> new CommerceException(CommerceErrorCodes.MEMBER_NOT_FOUND));
 
         // 현재 포인트 조회
         Optional<Point> optionalPoint = pointRepository.findById(dto.memberId());
@@ -39,16 +38,15 @@ public class MemberService {
             log.info("잔액 충전 내역 없음 : {}", dto.memberId());
             point = new Point(dto.memberId());
             pointRepository.save(point);
+        } else {
+            point = optionalPoint.get();
         }
-
-        point = optionalPoint.get();
 
         // 포인트 업데이트
         point.charge(dto.points());
         pointRepository.save(point);
 
         // 회원 테이블에도 업데이트
-        Member member = optionalMember.get();
         member.update(point.getPoint());
         memberRepository.save(member);
 

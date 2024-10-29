@@ -30,17 +30,15 @@ public class OrderService {
     @Transactional(rollbackFor = {Exception.class})
     public OrderResponseDto makeOrder(OrderRequestDto dto) {
 
-        Member member = memberRepository.findById(dto.memberId())
-                .orElseThrow(() -> new CommerceException(CommerceErrorCodes.MEMBER_NOT_FOUND));
-
-        int memberPoint = 0;
-
+        Member member = memberRepository.findById(dto.memberId()).orElseThrow(() -> new CommerceException(CommerceErrorCodes.MEMBER_NOT_FOUND));
         Optional<Point> optionalPoint = pointRepository.findById(member.getId());
+        Point point = null;
+
         if (optionalPoint.isEmpty()) {
-            Point point = new Point(member.getId());
+            point = new Point(member.getId());
             pointRepository.save(point);
         } else {
-            memberPoint = optionalPoint.get().getPoint();
+            point = optionalPoint.get();
         }
 
         List<Product> products = dto.products().stream()
@@ -54,7 +52,7 @@ public class OrderService {
                         .findFirst().get().getPrice())
                 .sum();
 
-        if (totalPrice > memberPoint) {
+        if (totalPrice > point.getPoint()) {
             throw new CommerceException(CommerceErrorCodes.INSUFFICIENT_POINT);
         }
 
@@ -68,7 +66,6 @@ public class OrderService {
         }
 
         // 잔액 감소
-        Point point = optionalPoint.get();
         point.use(totalPrice);
         pointRepository.save(point);
 
@@ -76,14 +73,13 @@ public class OrderService {
         memberRepository.save(member);
 
 
-
         // 주문 등록
         Order order = new Order(null, member.getId(), totalPrice, null, null, LocalDateTime.now());
         Order savedOrder = orderRepository.save(order);
 
         for (OrderRequestDto.OrderItemRequestDto orderItemDto : dto.products()) {
-            ProductStock productStock = productStockRepository.findById(orderItemDto.productId()).get();
-            Product product = productRepository.findById(orderItemDto.productId()).get();
+            ProductStock productStock = productStockRepository.findById(orderItemDto.productId()).orElseThrow(()-> new CommerceException(CommerceErrorCodes.PRODUCT_STOCK_NOT_FOUND));
+            Product product = productRepository.findById(orderItemDto.productId()).orElseThrow(()-> new CommerceException(CommerceErrorCodes.PRODUCT_NOT_FOUND));
 
             // 재고 감소
             productStock.minus(orderItemDto.amount());
