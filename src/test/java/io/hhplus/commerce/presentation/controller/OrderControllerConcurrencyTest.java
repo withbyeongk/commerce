@@ -37,7 +37,8 @@ public class OrderControllerConcurrencyTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     MemberRepository memberRepository;
