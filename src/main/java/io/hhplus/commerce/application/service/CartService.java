@@ -53,7 +53,7 @@ public class CartService {
         for (Cart cart : carts) {
             Long productId = cart.getProductId();
 
-            Product product = productRepository.findById(productId).get();
+            Product product = productRepository.findById(productId).orElseThrow(() -> new CommerceException(CommerceErrorCodes.PRODUCT_NOT_FOUND));
 
             response.add(product.toResponseDto());
         }
