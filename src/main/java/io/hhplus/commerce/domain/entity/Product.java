@@ -82,4 +82,8 @@ public class Product {
     public Product minusStock(int amount) {
         return new Product(name, price, stock - amount, description, deletedAt, updatedAt, createdAt);
     }
+
+    public void update(int amount) {
+        this.stock = amount;
+    }
 }

@@ -52,17 +52,28 @@ public class OrderControllerConcurrencyTest {
     @Autowired
     ProductStockRepository productStockRepository;
 
+    private Member createMember() {
+        return new Member("회원1", 10000);
+    }
+    private Point createPoint(Long memberId) {
+        return new Point(memberId, 10000);
+    }
+
+    private Product createProduct() {
+        return new Product("상품1", 1000, 100, "상품1설명");
+    }
+    private ProductStock createProductStock(Long productId) {
+        return new ProductStock(productId, 100);
+    }
+
     @Test
     @DisplayName("주문 동시성 테스트 성공. 상품 하나씩 열번을 주문했을 때 재고 10개 소진 및 그에 해당하는 금액 사용")
     public void successfulOrderTest() throws Exception {
 
-        Member member = new Member(null, "회원1", 10000, null, null, LocalDateTime.now());
-        Member savedMember = memberRepository.save(member);
-        Point point = new Point(savedMember.getId(), 10000);
-        pointRepository.save(point);
-        Product product = new Product("상품1", 1000, 100, "상품1설명");
-        Product savedProduct = productRepository.save(product);
-        productStockRepository.save(new ProductStock(savedProduct.getId(), 100));
+        Member savedMember = memberRepository.save(createMember());
+        pointRepository.save(createPoint(savedMember.getId()));
+        Product savedProduct = productRepository.save(createProduct());
+        productStockRepository.save(createProductStock(savedProduct.getId()));
 
 
         ExecutorService executorService = Executors.newFixedThreadPool(10);
@@ -95,11 +106,14 @@ public class OrderControllerConcurrencyTest {
         executorService.awaitTermination(10, TimeUnit.SECONDS);
 
 
-        int currentPoints = pointRepository.findById(savedMember.getId()).get().getPoint();
-        int currentMemberPoints = memberRepository.findById(savedMember.getId()).get().getPoint();
-        int currentStock = productStockRepository.findById(savedProduct.getId()).get().getStock();
-        assertEquals(0, currentPoints);
-        assertEquals(0, currentMemberPoints);
-        assertEquals(90, currentStock);
+        Point resultPoint = pointRepository.findById(savedMember.getId()).get();
+        Member resultMember = memberRepository.findById(savedMember.getId()).get();
+        ProductStock resultStock = productStockRepository.findById(savedProduct.getId()).get();
+        Product resultProduct = productRepository.findById(savedProduct.getId()).get();
+
+        assertEquals(new Point(savedMember.getId(), 0), resultPoint);
+        assertEquals(0, resultMember.getPoint());
+        assertEquals(new ProductStock(savedProduct.getId(), 90), resultStock);
+        assertEquals(90, resultProduct.getStock());
     }
 }

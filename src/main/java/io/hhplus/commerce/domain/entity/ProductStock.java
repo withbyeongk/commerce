@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.Objects;
+
 @Entity
 @Getter
 @Table(name = "product_stock")
@@ -23,6 +25,20 @@ public class ProductStock {
 
     @Column(name = "stock", nullable = false)
     private int stock;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductStock transStock = (ProductStock) o;
+        return this.stock == transStock.stock &&
+                Objects.equals(id, transStock.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, stock);
+    }
 
     public void minus(int quantity) {
         if (quantity <= 0) {

@@ -86,7 +86,8 @@ public class OrderService {
             productStockRepository.save(productStock);
 
             // 상품 테이블 업데이트
-            productRepository.save(product.minusStock(orderItemDto.amount()));
+            product.update(productStock.getStock());
+            productRepository.save(product);
 
             // 주문 상품 등록
             orderItemRepository.save(new OrderItem(savedOrder.getId(), orderItemDto.productId(), orderItemDto.productId(), orderItemDto.amount()));
