@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Objects;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -54,4 +56,19 @@ public class Point {
         this.point -= point;
         log.info("POINT :: 사용금액 : {}, 잔액 : {}", point, this.point);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Point transPoint = (Point) o;
+        return this.point == transPoint.point &&
+                Objects.equals(memberId, transPoint.memberId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(memberId, point);
+    }
+
 }

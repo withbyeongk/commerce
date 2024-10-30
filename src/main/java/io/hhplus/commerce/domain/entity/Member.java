@@ -10,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -41,6 +42,12 @@ public class Member {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    public Member(String name, int point) {
+        this.name = name;
+        this.point = point;
+        this.createdAt = LocalDateTime.now();
+    }
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
@@ -66,6 +73,25 @@ public class Member {
         this.point = point;
         log.info("MEMBER :: 업데이트 :: 잔액 : {}", this.point);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Member transMember = (Member) o;
+        return point == transMember.point &&
+                Objects.equals(id, transMember.id) &&
+                Objects.equals(name, transMember.name) &&
+                Objects.equals(deletedAt, transMember.deletedAt) &&
+                Objects.equals(updatedAt, transMember.updatedAt) &&
+                Objects.equals(createdAt, transMember.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, point, deletedAt, updatedAt, createdAt);
+    }
+
 
     public PointResponseDto toResponseDto() {
         return new PointResponseDto(id, point);
