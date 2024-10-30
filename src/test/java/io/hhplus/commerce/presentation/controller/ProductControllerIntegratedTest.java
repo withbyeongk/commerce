@@ -92,11 +92,10 @@ public class ProductControllerIntegratedTest {
                 null,
                 String.class);
 
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        JsonNode root = mapper.readTree(responseEntity.getBody());
+        objectMapper.registerModule(new JavaTimeModule());
+        JsonNode root = objectMapper.readTree(responseEntity.getBody());
         JsonNode content = root.path("content");
-        List<ProductResponseDto> products = mapper.readValue(content.toString(), new TypeReference<List<ProductResponseDto>>(){});
+        List<ProductResponseDto> products = objectMapper.readValue(content.toString(), new TypeReference<List<ProductResponseDto>>(){});
 
         // then
         assertNotNull(products);
