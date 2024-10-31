@@ -22,7 +22,9 @@ public enum CommerceErrorCodes implements ErrorCode {
     INVALID_EXCEED_QUANTITY(HttpStatus.BAD_REQUEST, "현재 장바구니에 담긴 상품 수보다 더 많거나 같은 양을 꺼낼 수 없습니다."),
     INVALID_ARGUMENTS_QUANTITY(HttpStatus.BAD_REQUEST, "수량은 양수로 입력해야 합니다."),
     INVALID_ARGUMENTS_POINT(HttpStatus.BAD_REQUEST, "충전 포인트는 양수로 입력해야 합니다."),
-    PRODUCT_STOCK_NOT_FOUND(HttpStatus.BAD_REQUEST, "상품 재고정보를 찾을 수 없습니다.");
+    PRODUCT_STOCK_NOT_FOUND(HttpStatus.BAD_REQUEST, "상품 재고정보를 찾을 수 없습니다."),
+    OPTIMISTIC_LOCKING_FAILURE(HttpStatus.CONFLICT, "충전에 실패했습니다. 다시 시도해 주세요.")
+    ;
 
 
     private final HttpStatus httpStatus;

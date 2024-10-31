@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,46 +29,50 @@ public class MemberService {
 
     @Transactional
     @Retryable(
-            value = ObjectOptimisticLockingFailureException.class,
+            retryFor = ObjectOptimisticLockingFailureException.class,
             maxAttempts = 5,
-            backoff = @Backoff(delay = 500)
+            backoff = @Backoff(delay = 10),
+            recover = "recoverFailure"
     )
     public int chargePoint(ChargePointDto dto) {
 
         int resultPoint = 0;
-        try {
-            // 회원 id 조회
-            Member member = memberRepository.findById(dto.memberId()).orElseThrow(() -> new CommerceException(CommerceErrorCodes.MEMBER_NOT_FOUND));
 
-            // 현재 포인트 조회
-            Optional<Point> optionalPoint = pointRepository.findById(dto.memberId());
+        // 회원 id 조회
+        Member member = memberRepository.findById(dto.memberId()).orElseThrow(() -> new CommerceException(CommerceErrorCodes.MEMBER_NOT_FOUND));
 
-            Point point = null;
+        // 현재 포인트 조회
+        Optional<Point> optionalPoint = pointRepository.findById(dto.memberId());
 
-            // 회원의 포인트가 존재하지 않을 경우 기본값으로 설정하여 저장
-            if (!optionalPoint.isPresent()) {
-                log.info("잔액 충전 내역 없음 : {}", dto.memberId());
-                point = new Point(dto.memberId());
-                pointRepository.save(point);
-            } else {
-                point = optionalPoint.get();
-            }
+        Point point = null;
 
-            // 포인트 업데이트
-            point.charge(dto.points());
+        // 회원의 포인트가 존재하지 않을 경우 기본값으로 설정하여 저장
+        if (!optionalPoint.isPresent()) {
+            log.info("잔액 충전 내역 없음 : {}", dto.memberId());
+            point = new Point(dto.memberId());
             pointRepository.save(point);
-
-            // 회원 테이블에도 업데이트
-            member.update(point.getPoint());
-            memberRepository.save(member);
-            resultPoint = point.getPoint();
-
-        } catch (ObjectOptimisticLockingFailureException e) {
-            log.info("ObjectOptimisticLockingFailureException : {}", e.getMessage());
+        } else {
+            point = optionalPoint.get();
         }
+
+        // 포인트 업데이트
+        point.charge(dto.points());
+        pointRepository.save(point);
+
+        // 회원 테이블에도 업데이트
+        member.update(point.getPoint());
+        memberRepository.save(member);
+        resultPoint = point.getPoint();
 
         return resultPoint;
     }
+
+    @Recover
+    public int recoverFailure(ObjectOptimisticLockingFailureException e) {
+        throw new CommerceException(CommerceErrorCodes.OPTIMISTIC_LOCKING_FAILURE);
+    }
+
+
 
     public PointResponseDto getPoint(Long memberId) {
 
