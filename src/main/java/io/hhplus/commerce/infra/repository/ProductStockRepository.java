@@ -13,6 +13,6 @@ import java.util.Optional;
 public interface ProductStockRepository extends JpaRepository<ProductStock, Long> {
     @Override
     @Transactional
-    @Lock(LockModeType.PESSIMISTIC_READ)
+    @Lock(LockModeType.OPTIMISTIC)
     Optional<ProductStock> findById(Long aLong);
 }

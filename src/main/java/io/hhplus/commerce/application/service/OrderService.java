@@ -8,6 +8,10 @@ import io.hhplus.commerce.presentation.controller.order.dto.OrderRequestDto;
 import io.hhplus.commerce.presentation.controller.order.dto.OrderResponseDto;
 import io.hhplus.commerce.presentation.dataflatform.ReportOrderInfo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +32,14 @@ public class OrderService {
     private final PointRepository pointRepository;
 
     @Transactional(rollbackFor = {Exception.class})
+    @Retryable(
+            retryFor = ObjectOptimisticLockingFailureException.class,
+            maxAttempts = 5,
+            backoff = @Backoff(delay = 50),
+            recover = "recoverFailure",
+            noRetryFor = {CommerceException.class, RuntimeException.class},
+            notRecoverable = {CommerceException.class, RuntimeException.class}
+    )
     public OrderResponseDto makeOrder(OrderRequestDto dto) {
 
         Member member = memberRepository.findById(dto.memberId()).orElseThrow(() -> new CommerceException(CommerceErrorCodes.MEMBER_NOT_FOUND));
@@ -104,6 +116,10 @@ public class OrderService {
         reportOrderInfo.sendOrderInfomation(responseDto.toOrderInfoDto());
 
         return responseDto;
+    }
+    @Recover
+    public int recoverFailure(ObjectOptimisticLockingFailureException e) {
+        throw new CommerceException(CommerceErrorCodes.OPTIMISTIC_LOCKING_FAILURE);
     }
 
 }

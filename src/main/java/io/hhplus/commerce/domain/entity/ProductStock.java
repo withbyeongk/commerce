@@ -26,6 +26,14 @@ public class ProductStock {
     @Column(name = "stock", nullable = false)
     private int stock;
 
+    @Version
+    private int version;
+
+    public ProductStock(Long id, int stock) {
+        this.id = id;
+        this.stock = stock;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
