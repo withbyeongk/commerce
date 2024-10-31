@@ -43,6 +43,9 @@ dependencies {
 
     // Swagger
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4")
+
+    // 낙관적락 사용 시 retry를 위한 의존성 추가
+    implementation("org.springframework.retry:spring-retry")
 }
 
 tasks.withType<Test> {

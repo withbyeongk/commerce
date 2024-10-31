@@ -18,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -26,6 +25,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static io.hhplus.commerce.common.DummyFactory.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -52,19 +52,6 @@ public class OrderControllerConcurrencyTest {
     @Autowired
     ProductStockRepository productStockRepository;
 
-    private Member createMember() {
-        return new Member("회원1", 10000);
-    }
-    private Point createPoint(Long memberId) {
-        return new Point(memberId, 10000);
-    }
-
-    private Product createProduct() {
-        return new Product("상품1", 1000, 100, "상품1설명");
-    }
-    private ProductStock createProductStock(Long productId) {
-        return new ProductStock(productId, 100);
-    }
 
     @Test
     @DisplayName("주문 동시성 테스트 성공. 상품 하나씩 열번을 주문했을 때 재고 10개 소진 및 그에 해당하는 금액 사용")

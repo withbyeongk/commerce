@@ -15,6 +15,6 @@ public interface PointRepository extends JpaRepository<Point, Long> {
 
     @Override
     @Transactional
-    @Lock(LockModeType.PESSIMISTIC_READ)
+    @Lock(LockModeType.OPTIMISTIC)
     Optional<Point> findById(Long id);
 }
