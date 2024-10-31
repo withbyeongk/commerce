@@ -14,7 +14,7 @@ public class DummyFactory {
     }
 
     public static Product createProduct() {
-        return new Product("상품1", 1000, 100, "상품1설명");
+        return new Product("상품1", 100, 100, "상품1설명");
     }
     public static ProductStock createProductStock(Long productId) {
         return new ProductStock(productId, 100);

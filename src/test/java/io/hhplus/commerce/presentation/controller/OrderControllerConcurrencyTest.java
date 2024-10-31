@@ -10,6 +10,8 @@ import io.hhplus.commerce.infra.repository.PointRepository;
 import io.hhplus.commerce.infra.repository.ProductRepository;
 import io.hhplus.commerce.infra.repository.ProductStockRepository;
 import io.hhplus.commerce.presentation.controller.order.dto.OrderRequestDto;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,19 @@ public class OrderControllerConcurrencyTest {
     @Autowired
     ProductStockRepository productStockRepository;
 
+    private long start;
+    private long end;
+
+    @BeforeEach
+    public void startTime() {
+        start = System.nanoTime();
+    }
+
+    @AfterEach
+    public void endTime() {
+        end = System.nanoTime();
+        System.out.println(end - start);
+    }
 
     @Test
     @DisplayName("주문 동시성 테스트 성공. 상품 하나씩 열번을 주문했을 때 재고 10개 소진 및 그에 해당하는 금액 사용")
@@ -62,8 +77,8 @@ public class OrderControllerConcurrencyTest {
         Product savedProduct = productRepository.save(createProduct());
         productStockRepository.save(createProductStock(savedProduct.getId()));
 
-
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        int repeatCount = 10;
+        ExecutorService executorService = Executors.newFixedThreadPool(repeatCount);
 
         List<OrderRequestDto.OrderItemRequestDto> items = new ArrayList<>();
         items.add(new OrderRequestDto.OrderItemRequestDto(savedProduct.getId(), 1));
@@ -84,7 +99,7 @@ public class OrderControllerConcurrencyTest {
             }
         };
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < repeatCount; i++) {
             executorService.submit(task);
         }
 
@@ -98,9 +113,9 @@ public class OrderControllerConcurrencyTest {
         ProductStock resultStock = productStockRepository.findById(savedProduct.getId()).get();
         Product resultProduct = productRepository.findById(savedProduct.getId()).get();
 
-        assertEquals(new Point(savedMember.getId(), 0), resultPoint);
-        assertEquals(0, resultMember.getPoint());
-        assertEquals(new ProductStock(savedProduct.getId(), 90), resultStock);
-        assertEquals(90, resultProduct.getStock());
+        assertEquals(new Point(savedMember.getId(), 10000 - repeatCount * 100), resultPoint);
+        assertEquals(10000 - repeatCount * 100, resultMember.getPoint());
+        assertEquals(new ProductStock(savedProduct.getId(), 100 - repeatCount), resultStock);
+        assertEquals(100 - repeatCount, resultProduct.getStock());
     }
 }
