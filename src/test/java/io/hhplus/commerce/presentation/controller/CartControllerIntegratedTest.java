@@ -22,10 +22,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
+import static io.hhplus.commerce.common.DummyFactory.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -59,13 +59,10 @@ public class CartControllerIntegratedTest {
     @DisplayName("카트에 상품 담기")
     public void putInCartTest() throws Exception {
 
-        Member member = new Member(null, "회원1", 10000, null, null, LocalDateTime.now());
-        Product product = new Product("상품1", 1000, 100, "상품1설명");
+        Member savedMember = memberRepository.save(createMember());
+        Product savedProduct = productRepository.save(createProduct());
 
-        memberRepository.save(member);
-        productRepository.save(product);
-
-        CartPutInDto cartPutInDto = new CartPutInDto(member.getId(), product.getId());
+        CartPutInDto cartPutInDto = new CartPutInDto(savedMember.getId(), savedProduct.getId());
 
         ResponseEntity<Void> responseEntity =
                 restTemplate.postForEntity(
@@ -81,12 +78,10 @@ public class CartControllerIntegratedTest {
     @DisplayName("카트에서 상품 삭제하기")
     public void putOffCartTest() throws Exception {
 
-        Member member = new Member(null, "회원1", 10000, null, null, LocalDateTime.now());
-        Product product = new Product("상품1", 1000, 100, "상품1설명");
-        memberRepository.save(member);
-        productRepository.save(product);
+        Member savedMember = memberRepository.save(createMember());
+        Product savedProduct = productRepository.save(createProduct());
 
-        Cart cart = new Cart(null, member.getId(), product.getId(), 1);
+        Cart cart = new Cart(null, savedMember.getId(), savedProduct.getId(), 1);
         cartRepository.save(cart);
 
         ResponseEntity<Void> responseEntity =
@@ -104,13 +99,9 @@ public class CartControllerIntegratedTest {
     @Test
     public void shouldGetCart() throws Exception {
         // given
-        Member member = new Member(null, "회원1", 10000, null, null, LocalDateTime.now());
-        Product product = new Product("상품1", 1000, 100, "상품1설명");
-
-        Member savedMember = memberRepository.save(member);
-        Product savedProduct = productRepository.save(product);
-        Cart cart = new Cart(null, savedMember.getId(), savedProduct.getId(), 1);
-        cartRepository.save(cart);
+        Member savedMember = memberRepository.save(createMember());
+        Product savedProduct = productRepository.save(createProduct());
+        cartRepository.save(createCart(savedMember.getId(), savedProduct.getId()));
 
         // when
         ResponseEntity<List> responseEntity =
@@ -130,14 +121,9 @@ public class CartControllerIntegratedTest {
     @Disabled
     public void shouldChangeQuantity() throws Exception {
         // given
-        Member member = new Member(null, "회원1", 10000, null, null, LocalDateTime.now());
-        Product product = new Product("상품1", 1000, 100, "상품1설명");
-
-        Member savedMember = memberRepository.save(member);
-        Product savedProduct = productRepository.save(product);
-
-        Cart cart = new Cart(null, savedMember.getId(), savedProduct.getId(), 1);
-        Cart savedCart = cartRepository.save(cart);
+        Member savedMember = memberRepository.save(createMember());
+        Product savedProduct = productRepository.save(createProduct());
+        Cart savedCart = cartRepository.save(createCart(savedMember.getId(), savedProduct.getId()));
 
         ChangeQuantityDto dto = new ChangeQuantityDto(savedCart.getId(),5);
 

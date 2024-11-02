@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static io.hhplus.commerce.common.DummyFactory.createMember;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -97,7 +98,7 @@ class CartServiceUnitTest {
     @DisplayName("회원 포인트 조회 시 잘못된 상품 ID가 입력될 경우 에러 발생")
     void invalidProductIdInPunIn() {
         // given
-        Member member = new Member(1L, "홍길동", 1000, null, null, LocalDateTime.now());
+        Member member = new Member(1L, "홍길동", 1000);
         CartPutInDto dto = new CartPutInDto(1L, 1L);
 
         // when
@@ -128,8 +129,8 @@ class CartServiceUnitTest {
         testCarts.add(cart1);
         testCarts.add(cart2);
 
-        Product product1 = new Product(101L, "상품1", 1000, 100, "상품설명1", null, null, LocalDateTime.now());
-        Product product2 = new Product(102L, "상품2", 2000, 50, "상품설명2", null, null, LocalDateTime.now());
+        Product product1 = new Product(101L, "상품1", 1000, 100, "상품설명1");
+        Product product2 = new Product(102L, "상품2", 2000, 50, "상품설명2");
 
         when(cartRepository.findByMemberId(memberId)).thenReturn(testCarts);
         when(productRepository.findById(cart1.getProductId())).thenReturn(Optional.of(product1));

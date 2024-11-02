@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import static io.hhplus.commerce.common.DummyFactory.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -61,15 +62,11 @@ public class OrderControllerIntegratedTest {
     @Test
     @DisplayName("주문 테스트 성공")
     public void makeOrderTest() throws JsonProcessingException {
-        // given
-        Member member = new Member(null, "회원1", 10000, null, null, LocalDateTime.now());
-        Member savedMember = memberRepository.save(member);
-        Product product = new Product("상품1", 1000, 20, "상품 설명");
-        Product savedProduct = productRepository.save(product);
-        Point point = new Point(savedMember.getId(), 10000);
-        Point savedPoint = pointRepository.save(point);
-        ProductStock productStock = new ProductStock(savedProduct.getId(), 20);
-        ProductStock savedStock = productStockRepository.save(productStock);
+        // given;
+        Member savedMember = memberRepository.save(createMember());
+        Product savedProduct = productRepository.save(createProduct());
+        pointRepository.save(createPoint(savedMember.getId()));
+        ProductStock savedStock = productStockRepository.save(createProductStock(savedProduct.getId()));
 
         List<OrderRequestDto.OrderItemRequestDto> products = Arrays.asList(
                 new OrderRequestDto.OrderItemRequestDto(savedProduct.getId(), 1)
@@ -82,7 +79,7 @@ public class OrderControllerIntegratedTest {
                 baseUrl + "/api/member/{memberId}/order",
                 new HttpEntity<>(objectMapper.writeValueAsString(orderRequestDto), createJsonHeader()),
                 OrderResponseDto.class,
-                member.getId());
+                savedMember.getId());
 
         // then
         Product resultProduct = productRepository.findById(savedProduct.getId()).get();

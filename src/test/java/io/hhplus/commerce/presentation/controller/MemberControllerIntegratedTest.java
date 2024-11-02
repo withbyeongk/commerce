@@ -21,6 +21,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 
+import static io.hhplus.commerce.common.DummyFactory.createMember;
+import static io.hhplus.commerce.common.DummyFactory.createPoint;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -48,12 +50,10 @@ class MemberControllerIntegratedTest {
     @DisplayName("잔액 충전 성공")
     public void shouldChargePoint() {
         // given
-        int beforePoint = 10000;
         int cargePoint = 1000;
-        Member member = new Member(null, "회원1", beforePoint, null, null, LocalDateTime.now());
-        Member savedMember = memberRepository.save(member);
-        Point point = new Point(savedMember.getId(), beforePoint);
-        pointRepository.save(point);
+        Member beforeMember = createMember();
+        Member savedMember = memberRepository.save(beforeMember);
+        pointRepository.save(createPoint(savedMember.getId()));
 
         ChargePointDto dto = new ChargePointDto(savedMember.getId(), cargePoint);
 
@@ -71,18 +71,16 @@ class MemberControllerIntegratedTest {
 
         int updatedMemberPoint = memberRepository.findById(savedMember.getId()).get().getPoint();
         int updatedPoint = pointRepository.findById(savedMember.getId()).get().getPoint();
-        assertEquals(cargePoint + beforePoint, updatedMemberPoint);
-        assertEquals(cargePoint + beforePoint, updatedPoint);
+        assertEquals(cargePoint + beforeMember.getPoint(), updatedMemberPoint);
+        assertEquals(cargePoint + beforeMember.getPoint(), updatedPoint);
     }
 
     @Test
     @DisplayName("잔액 조회 성공")
     public void shouldGetPoint() {
         // given
-        Member member = new Member(null, "회원1", 10000, null, null, LocalDateTime.now());
-        Member savedMember = memberRepository.save(member);
-        Point point = new Point(savedMember.getId(), 50);
-        Point savedPoint = pointRepository.save(point);
+        Member savedMember = memberRepository.save(createMember());
+        Point savedPoint = pointRepository.save(createPoint(savedMember.getId()));
 
         // 요청 실행
         ResponseEntity<PointResponseDto> responseEntity =

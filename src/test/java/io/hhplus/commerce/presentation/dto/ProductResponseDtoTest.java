@@ -17,7 +17,7 @@ class ProductResponseDtoTest {
     @DisplayName("Product -> ProductResponseDto 로 잘 변환되는지 테스트합니다.")
     void toDtoTest() {
         // given
-        Product product = new Product(1L, "Product 1", 100, 50, "Description 1", null, LocalDateTime.now(), LocalDateTime.now());
+        Product product = new Product(1L, "Product 1", 100, 50, "Description 1");
 
         // when
         ProductResponseDto productResponseDto = new ProductResponseDto(product);

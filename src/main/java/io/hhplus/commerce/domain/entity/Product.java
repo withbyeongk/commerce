@@ -64,6 +64,10 @@ public class Product {
         this(dto.name(), dto.price(), dto.stock(), dto.description(), null, null, LocalDateTime.now());
     }
 
+    public Product(Long id, String name, int price, int stock, String description) {
+        this(id, name, price, stock, description, null, null, LocalDateTime.now());
+    }
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();

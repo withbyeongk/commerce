@@ -54,11 +54,6 @@ public class ProductControllerIntegratedTest {
     public void setup() {
         baseUrl = "http://localhost:" + port;
     }
-    
-    private Product createProduct() {
-        Product product = new Product("상품1", 1000, 20, "상품1 설명");
-        return productRepository.save(product);
-    }
 
     @Test
     @DisplayName("상품 추가 성공")

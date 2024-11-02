@@ -1,9 +1,6 @@
 package io.hhplus.commerce.common;
 
-import io.hhplus.commerce.domain.entity.Member;
-import io.hhplus.commerce.domain.entity.Point;
-import io.hhplus.commerce.domain.entity.Product;
-import io.hhplus.commerce.domain.entity.ProductStock;
+import io.hhplus.commerce.domain.entity.*;
 
 public class DummyFactory {
     public static Member createMember() {
@@ -19,4 +16,9 @@ public class DummyFactory {
     public static ProductStock createProductStock(Long productId) {
         return new ProductStock(productId, 100);
     }
+
+    public static Cart createCart(Long memberId, Long productId) {
+        return new Cart(null, memberId, productId, 1);
+    }
 }
+

@@ -67,7 +67,7 @@ class MemberServiceUnitTest {
         int initPoint = 1000;
         int chargePoint = 2000;
         int chargedPoint = initPoint + chargePoint;
-        Member member = new Member(memberId, "회원", initPoint, null, null, LocalDateTime.now());
+        Member member = new Member(memberId, "회원", initPoint);
         Point point = new Point(memberId, initPoint);
         ChargePointDto dto = new ChargePointDto(memberId, chargePoint);
 

@@ -115,8 +115,8 @@ class OrderServiceUnitTest {
 
         // given
         OrderRequestDto dto = prepareOrderRequestDto();
-        Member member = new Member(1L, "회원", 0, null, null, LocalDateTime.now());
-        Product product = new Product(1L, "상품", 1000, 100, "상품설명", null, null, LocalDateTime.now());
+        Member member = new Member(1L, "회원", 0);
+        Product product = new Product(1L, "상품", 1000, 100, "상품설명");
         when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
         when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
 
@@ -135,8 +135,8 @@ class OrderServiceUnitTest {
 
         // given
         OrderRequestDto dto = prepareOrderRequestDto();
-        Member member = new Member(1L, "회원", 1000, null, null, LocalDateTime.now());
-        Product product = new Product(1L, "상품", 1000, 0, "상품설명", null, null, LocalDateTime.now());
+        Member member = new Member(1L, "회원", 1000);
+        Product product = new Product(1L, "상품", 1000, 0, "상품설명");
         Point point = new Point(1L, 1000);
         ProductStock productStock = new ProductStock(1L, 0);
         when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
@@ -159,9 +159,9 @@ class OrderServiceUnitTest {
 
         // given
         OrderRequestDto dto = prepareOrderRequestDto();
-        Member member = new Member(dto.memberId(), "회원", 10000, null, null, LocalDateTime.now());
+        Member member = new Member(dto.memberId(), "회원", 10000);
         Point point = new Point(1L, 1000);
-        Product product = new Product(1L, "상품", 1000, 0, "상품설명", null, null, LocalDateTime.now());
+        Product product = new Product(1L, "상품", 1000, 0, "상품설명");
         ProductStock productStock = new ProductStock(1L, 10);
         when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
         when(pointRepository.findById(anyLong())).thenReturn(Optional.of(point));

@@ -48,6 +48,13 @@ public class Member {
         this.createdAt = LocalDateTime.now();
     }
 
+    public Member(Long id, String name, int point) {
+        this.id = id;
+        this.name = name;
+        this.point = point;
+        this.createdAt = LocalDateTime.now();
+    }
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
