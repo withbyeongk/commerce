@@ -1,13 +1,13 @@
 package io.hhplus.commerce.presentation.controller;
 
-import io.hhplus.commerce.domain.entity.Cart;
-import io.hhplus.commerce.domain.entity.Member;
-import io.hhplus.commerce.domain.entity.Product;
-import io.hhplus.commerce.infra.repository.CartRepository;
-import io.hhplus.commerce.infra.repository.MemberRepository;
-import io.hhplus.commerce.infra.repository.ProductRepository;
-import io.hhplus.commerce.presentation.controller.cart.dto.CartPutInDto;
-import io.hhplus.commerce.presentation.controller.cart.dto.ChangeQuantityDto;
+import io.hhplus.commerce.domain.member.Cart;
+import io.hhplus.commerce.domain.member.Member;
+import io.hhplus.commerce.domain.product.Product;
+import io.hhplus.commerce.infra.repository.member.CartRepository;
+import io.hhplus.commerce.infra.repository.member.MemberRepository;
+import io.hhplus.commerce.infra.repository.product.ProductRepository;
+import io.hhplus.commerce.presentation.controller.member.dto.CartPutInDto;
+import io.hhplus.commerce.presentation.controller.member.dto.ChangeQuantityDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;

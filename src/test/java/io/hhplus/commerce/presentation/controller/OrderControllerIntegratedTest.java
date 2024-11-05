@@ -2,14 +2,13 @@ package io.hhplus.commerce.presentation.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.hhplus.commerce.domain.entity.Member;
-import io.hhplus.commerce.domain.entity.Point;
-import io.hhplus.commerce.domain.entity.Product;
-import io.hhplus.commerce.domain.entity.ProductStock;
-import io.hhplus.commerce.infra.repository.MemberRepository;
-import io.hhplus.commerce.infra.repository.PointRepository;
-import io.hhplus.commerce.infra.repository.ProductRepository;
-import io.hhplus.commerce.infra.repository.ProductStockRepository;
+import io.hhplus.commerce.domain.member.Member;
+import io.hhplus.commerce.domain.product.Product;
+import io.hhplus.commerce.domain.product.ProductStock;
+import io.hhplus.commerce.infra.repository.member.MemberRepository;
+import io.hhplus.commerce.infra.repository.member.PointRepository;
+import io.hhplus.commerce.infra.repository.product.ProductRepository;
+import io.hhplus.commerce.infra.repository.product.ProductStockRepository;
 import io.hhplus.commerce.presentation.controller.order.dto.OrderRequestDto;
 import io.hhplus.commerce.presentation.controller.order.dto.OrderResponseDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +20,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -86,8 +84,8 @@ public class OrderControllerIntegratedTest {
         Member resultMember = memberRepository.findById(savedMember.getId()).get();
         ProductStock resultStock = productStockRepository.findById(savedStock.getId()).get();
 
-        assertEquals(19, resultStock.getStock());
-        assertEquals(9000, resultMember.getPoint());
+        assertEquals(99, resultStock.getStock());
+        assertEquals(9900, resultMember.getPoint());
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());

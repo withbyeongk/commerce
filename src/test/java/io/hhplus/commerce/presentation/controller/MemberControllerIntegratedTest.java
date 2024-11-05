@@ -1,9 +1,9 @@
 package io.hhplus.commerce.presentation.controller;
 
-import io.hhplus.commerce.domain.entity.Member;
-import io.hhplus.commerce.domain.entity.Point;
-import io.hhplus.commerce.infra.repository.MemberRepository;
-import io.hhplus.commerce.infra.repository.PointRepository;
+import io.hhplus.commerce.domain.member.Member;
+import io.hhplus.commerce.domain.member.Point;
+import io.hhplus.commerce.infra.repository.member.MemberRepository;
+import io.hhplus.commerce.infra.repository.member.PointRepository;
 import io.hhplus.commerce.presentation.controller.member.dto.ChargePointDto;
 import io.hhplus.commerce.presentation.controller.member.dto.PointResponseDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,8 +18,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
-import java.time.LocalDateTime;
 
 import static io.hhplus.commerce.common.DummyFactory.createMember;
 import static io.hhplus.commerce.common.DummyFactory.createPoint;

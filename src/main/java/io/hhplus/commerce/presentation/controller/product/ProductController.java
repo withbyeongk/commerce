@@ -1,6 +1,7 @@
 package io.hhplus.commerce.presentation.controller.product;
 
-import io.hhplus.commerce.application.service.ProductService;
+import io.hhplus.commerce.application.facade.ProductFacade;
+import io.hhplus.commerce.application.facade.usecase.ProductUsecase;
 import io.hhplus.commerce.presentation.controller.product.dto.ProductRequestDto;
 import io.hhplus.commerce.presentation.controller.product.dto.ProductResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,14 +23,14 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "/api/products", description = "상품 API")
 public class ProductController {
-    private final ProductService productService;
+    private final ProductUsecase productUsecase;
 
 
     @Operation(summary = "상품 추가")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Long.class)))
     @PostMapping("/add")
     public Long add(@RequestBody ProductRequestDto dto) {
-        return productService.add(dto);
+        return productUsecase.add(dto);
     }
 
     @Operation(summary = "상품 목록 조회")
@@ -39,7 +40,7 @@ public class ProductController {
     )})
     @GetMapping("/all")
     public Page<ProductResponseDto> findAll(Pageable pageable) {
-        return productService.findAll(pageable);
+        return productUsecase.findAll(pageable);
     }
 
     @Operation(summary = "인기 상품 조회")
@@ -49,7 +50,7 @@ public class ProductController {
     )})
     @GetMapping("/bestsellers")
     public List<ProductResponseDto> getBestSellers() {
-        return productService.findTopFiveWhileThreeDays();
+        return productUsecase.getBestSellers();
     }
 
     @Operation(summary = "상품 상세 조회")
@@ -57,6 +58,6 @@ public class ProductController {
             mediaType = "application/json", schema = @Schema(implementation = ProductResponseDto.class)))
     @GetMapping("/{productId}")
     public ProductResponseDto findById(@PathVariable (name = "productId") Long productId) {
-        return productService.findById(productId);
+        return productUsecase.getProduct(productId);
     }
 }

@@ -1,9 +1,9 @@
 package io.hhplus.commerce.presentation.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.hhplus.commerce.domain.entity.Member;
-import io.hhplus.commerce.infra.repository.MemberRepository;
-import io.hhplus.commerce.infra.repository.PointRepository;
+import io.hhplus.commerce.domain.member.Member;
+import io.hhplus.commerce.infra.repository.member.MemberRepository;
+import io.hhplus.commerce.infra.repository.member.PointRepository;
 import io.hhplus.commerce.presentation.controller.member.dto.ChargePointDto;
 import io.hhplus.commerce.presentation.controller.member.dto.PointResponseDto;
 import org.junit.jupiter.api.AfterEach;

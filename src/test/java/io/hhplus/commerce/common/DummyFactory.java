@@ -1,6 +1,10 @@
 package io.hhplus.commerce.common;
 
-import io.hhplus.commerce.domain.entity.*;
+import io.hhplus.commerce.domain.member.Cart;
+import io.hhplus.commerce.domain.member.Member;
+import io.hhplus.commerce.domain.member.Point;
+import io.hhplus.commerce.domain.product.Product;
+import io.hhplus.commerce.domain.product.ProductStock;
 
 public class DummyFactory {
     public static Member createMember() {

@@ -1,14 +1,14 @@
 package io.hhplus.commerce.presentation.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.hhplus.commerce.domain.entity.Member;
-import io.hhplus.commerce.domain.entity.Point;
-import io.hhplus.commerce.domain.entity.Product;
-import io.hhplus.commerce.domain.entity.ProductStock;
-import io.hhplus.commerce.infra.repository.MemberRepository;
-import io.hhplus.commerce.infra.repository.PointRepository;
-import io.hhplus.commerce.infra.repository.ProductRepository;
-import io.hhplus.commerce.infra.repository.ProductStockRepository;
+import io.hhplus.commerce.domain.member.Member;
+import io.hhplus.commerce.domain.member.Point;
+import io.hhplus.commerce.domain.product.Product;
+import io.hhplus.commerce.domain.product.ProductStock;
+import io.hhplus.commerce.infra.repository.member.MemberRepository;
+import io.hhplus.commerce.infra.repository.member.PointRepository;
+import io.hhplus.commerce.infra.repository.product.ProductRepository;
+import io.hhplus.commerce.infra.repository.product.ProductStockRepository;
 import io.hhplus.commerce.presentation.controller.order.dto.OrderRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -88,7 +88,7 @@ public class OrderControllerConcurrencyTest {
         Runnable task = () -> {
             try {
                 latch.await();
-                // Act
+
                 mockMvc.perform(post("/api/member/" + savedMember.getId() + "/order")
                                 .content(objectMapper.writeValueAsString(orderDto))
                                 .contentType(MediaType.APPLICATION_JSON))
