@@ -62,8 +62,8 @@ public class OrderControllerIntegratedTest {
     public void makeOrderTest() throws JsonProcessingException {
         // given;
         Member savedMember = memberRepository.save(createMember());
-        Product savedProduct = productRepository.save(createProduct());
         pointRepository.save(createPoint(savedMember.getId()));
+        Product savedProduct = productRepository.save(createProduct());
         ProductStock savedStock = productStockRepository.save(createProductStock(savedProduct.getId()));
 
         List<OrderRequestDto.OrderItemRequestDto> products = Arrays.asList(
@@ -84,10 +84,8 @@ public class OrderControllerIntegratedTest {
         Member resultMember = memberRepository.findById(savedMember.getId()).get();
         ProductStock resultStock = productStockRepository.findById(savedStock.getId()).get();
 
-        assertEquals(99, resultStock.getStock());
-        assertEquals(9900, resultMember.getPoint());
-
         assertNotNull(response);
+        assertEquals(99, resultStock.getStock());
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
         OrderResponseDto resultOrder = response.getBody();

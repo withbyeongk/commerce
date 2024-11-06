@@ -8,6 +8,7 @@ import io.hhplus.commerce.common.exception.CommerceException;
 import io.hhplus.commerce.domain.member.Point;
 import io.hhplus.commerce.domain.order.Order;
 import io.hhplus.commerce.domain.order.OrderStatus;
+import io.hhplus.commerce.domain.order.Payment;
 import io.hhplus.commerce.presentation.controller.order.dto.PaymentRequestDto;
 import io.hhplus.commerce.presentation.controller.order.dto.PaymentResponseDto;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +22,7 @@ import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PaymentFacadeTest {
@@ -62,15 +63,16 @@ class PaymentFacadeTest {
 
         when(orderService.getOrder(any())).thenReturn(order);
         when(memberService.getPointById(any())).thenReturn(point);
+        when(paymentService.payment(any(Payment.class))).thenReturn(new Payment(1L, 1L, 1L, 1000));
 
         // when
         PaymentResponseDto responseDto = paymentFacade.payment(requestDto);
 
         // then
         assertNotNull(responseDto);
-        assertEquals(requestDto.orderId(), responseDto.orderId());
-        assertEquals(requestDto.memberId(), responseDto.memberId());
-        assertEquals(requestDto.amount(), responseDto.amount());
+        verify(memberService, times(1)).updatePoint(any(Point.class));
+        verify(orderService, times(1)).updateOrderState(any(Order.class), any(OrderStatus.class));
+        verify(paymentService, times(1)).payment(any(Payment.class));
     }
 
 }

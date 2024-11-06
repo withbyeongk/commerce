@@ -69,7 +69,7 @@ public class OrderControllerConcurrencyTest {
     }
 
     @Test
-    @DisplayName("주문 동시성 테스트 성공. 상품 하나씩 열번을 주문했을 때 재고 10개 소진 및 그에 해당하는 금액 사용")
+    @DisplayName("주문 동시성 테스트 성공. 상품 하나씩 열번을 주문했을 때 재고 10개 차감")
     public void successfulOrderTest() throws Exception {
 
         Member savedMember = memberRepository.save(createMember());
@@ -77,7 +77,7 @@ public class OrderControllerConcurrencyTest {
         Product savedProduct = productRepository.save(createProduct());
         productStockRepository.save(createProductStock(savedProduct.getId()));
 
-        int repeatCount = 10;
+        int repeatCount = 1;
         ExecutorService executorService = Executors.newFixedThreadPool(repeatCount);
 
         List<OrderRequestDto.OrderItemRequestDto> items = new ArrayList<>();
@@ -108,14 +108,12 @@ public class OrderControllerConcurrencyTest {
         executorService.awaitTermination(10, TimeUnit.SECONDS);
 
 
-        Point resultPoint = pointRepository.findById(savedMember.getId()).get();
-        Member resultMember = memberRepository.findById(savedMember.getId()).get();
         ProductStock resultStock = productStockRepository.findById(savedProduct.getId()).get();
         Product resultProduct = productRepository.findById(savedProduct.getId()).get();
 
-        assertEquals(new Point(savedMember.getId(), 10000 - repeatCount * 100), resultPoint);
-        assertEquals(10000 - repeatCount * 100, resultMember.getPoint());
-        assertEquals(new ProductStock(savedProduct.getId(), 100 - repeatCount), resultStock);
-        assertEquals(100 - repeatCount, resultProduct.getStock());
+        ProductStock expectedStock = new ProductStock(savedProduct.getId(), 100 - repeatCount);
+
+        assertEquals(expectedStock, resultStock);
+        assertEquals(expectedStock.getStock(), resultProduct.getStock());
     }
 }

@@ -46,4 +46,11 @@ public class Payment {
         this.memberId = memberId;
         this.amount = amount;
     }
+
+    public Payment(Long id, Long orderId, Long memberId, int amount) {
+        this.id = id;
+        this.orderId = orderId;
+        this.memberId = memberId;
+        this.amount = amount;
+    }
 }

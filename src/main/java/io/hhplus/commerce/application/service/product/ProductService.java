@@ -10,6 +10,7 @@ import io.hhplus.commerce.presentation.controller.order.dto.OrderRequestDto;
 import io.hhplus.commerce.presentation.controller.product.dto.ProductRequestDto;
 import io.hhplus.commerce.presentation.controller.product.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
@@ -43,12 +45,15 @@ public class ProductService {
     }
 
     public void updateStock(OrderRequestDto.OrderItemRequestDto dto) {
+        log.info("updateStock ------------- dto : ", dto);
         ProductStock productStock = productStockRepository.findById(dto.productId()).orElseThrow(()-> new CommerceException(CommerceErrorCodes.PRODUCT_STOCK_NOT_FOUND));
         productStock.minus(dto.quantity());
-        productStockRepository.save(productStock);
+        ProductStock savedStock = productStockRepository.save(productStock);
+        log.info("updateStock ------------- savedStock : ", savedStock.getStock());
 
         Product product = productRepository.findById(dto.productId()).orElseThrow(()-> new CommerceException(CommerceErrorCodes.PRODUCT_NOT_FOUND));
         product.update(productStock.getStock());
-        productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
+        log.info("updateStock ------------- savedProduct : ", savedProduct.getStock());
     }
 }

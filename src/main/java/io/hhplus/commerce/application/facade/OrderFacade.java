@@ -16,6 +16,7 @@ import io.hhplus.commerce.presentation.controller.order.dto.OrderRequestDto;
 import io.hhplus.commerce.presentation.controller.order.dto.OrderResponseDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toMap;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class OrderFacade implements OrderUsecase {
     private final MemberService memberService;
@@ -85,8 +87,10 @@ public class OrderFacade implements OrderUsecase {
         orderService.addOrder(order);
 
         for (OrderRequestDto.OrderItemRequestDto orderItemDto : dto.products()) {
+            log.info("-----------bk------ updateStock 시작");
             // 상품 재고 업데이트
             productService.updateStock(orderItemDto);
+            log.info("-----------bk------ updateStock 끝");
 
             // 아이템 등록
             OrderItem item = new OrderItem(order.getId(), orderItemDto.productId(), orderItemDto.quantity());

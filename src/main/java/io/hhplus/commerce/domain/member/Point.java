@@ -69,14 +69,22 @@ public class Point {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Point transPoint = (Point) o;
-        return this.point == transPoint.point &&
-                Objects.equals(memberId, transPoint.memberId);
+        Point point1 = (Point) o;
+        return version == point1.version && point == point1.point && Objects.equals(memberId, point1.memberId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(memberId, point);
+        return Objects.hash(memberId, version, point);
+    }
+
+    @Override
+    public String toString() {
+        return "Point{" +
+                "memberId=" + memberId +
+                ", version=" + version +
+                ", point=" + point +
+                '}';
     }
 
     public PointResponseDto toResponseDto() {

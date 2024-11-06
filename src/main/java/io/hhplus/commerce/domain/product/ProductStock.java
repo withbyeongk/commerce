@@ -48,6 +48,15 @@ public class ProductStock {
         return Objects.hash(id, stock);
     }
 
+    @Override
+    public String toString() {
+        return "ProductStock{" +
+                "id=" + id +
+                ", stock=" + stock +
+                ", version=" + version +
+                '}';
+    }
+
     public void minus(int quantity) {
         if (quantity <= 0) {
             throw new CommerceException(CommerceErrorCodes.INVALID_ARGUMENTS_QUANTITY);
