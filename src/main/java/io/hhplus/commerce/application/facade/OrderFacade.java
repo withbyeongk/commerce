@@ -40,14 +40,6 @@ public class OrderFacade implements OrderUsecase {
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    @Retryable(
-            retryFor = ObjectOptimisticLockingFailureException.class,
-            maxAttempts = 5,
-            backoff = @Backoff(delay = 50),
-            recover = "recoverFailure",
-            noRetryFor = {CommerceException.class},
-            notRecoverable = {CommerceException.class}
-    )
     public OrderResponseDto makeOrder(OrderRequestDto dto) {
         Member member = validateMember(dto.memberId());
         List<OrderRequestDto.OrderItemRequestDto> items = dto.products();
@@ -87,10 +79,8 @@ public class OrderFacade implements OrderUsecase {
         orderService.addOrder(order);
 
         for (OrderRequestDto.OrderItemRequestDto orderItemDto : dto.products()) {
-            log.info("-----------bk------ updateStock 시작");
             // 상품 재고 업데이트
             productService.updateStock(orderItemDto);
-            log.info("-----------bk------ updateStock 끝");
 
             // 아이템 등록
             OrderItem item = new OrderItem(order.getId(), orderItemDto.productId(), orderItemDto.quantity());
@@ -98,11 +88,6 @@ public class OrderFacade implements OrderUsecase {
         }
 
         return new OrderResponseDto(order.getId(), dto.memberId(), totalPrice);
-    }
-
-    @Recover
-    public int recoverFailure(ObjectOptimisticLockingFailureException e) {
-        throw new CommerceException(CommerceErrorCodes.OPTIMISTIC_LOCKING_FAILURE);
     }
 
     private Member validateMember(Long memberId) {

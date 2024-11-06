@@ -29,22 +29,11 @@ public class MemberFacade implements MemberUsecase {
 
     @Override
     @Transactional
-    @Retryable(
-            retryFor = ObjectOptimisticLockingFailureException.class,
-            maxAttempts = 5,
-            backoff = @Backoff(delay = 50),
-            recover = "recoverFailure"
-    )
     public PointResponseDto chargePoint(ChargePointDto dto) {
         Point chargedPoint = memberService.chargePoint(dto);
 
         memberService.updatePoint(chargedPoint.getMemberId(), chargedPoint.getPoint());
 
         return chargedPoint.toResponseDto();
-    }
-
-    @Recover
-    public int recoverFailure(ObjectOptimisticLockingFailureException e) {
-        throw new CommerceException(CommerceErrorCodes.OPTIMISTIC_LOCKING_FAILURE);
     }
 }

@@ -26,21 +26,12 @@ public class ProductStock {
     @Column(name = "stock", nullable = false)
     private int stock;
 
-    @Version
-    private int version;
-
-    public ProductStock(Long id, int stock) {
-        this.id = id;
-        this.stock = stock;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductStock transStock = (ProductStock) o;
-        return this.stock == transStock.stock &&
-                Objects.equals(id, transStock.id);
+        ProductStock stock1 = (ProductStock) o;
+        return stock == stock1.stock && Objects.equals(id, stock1.id);
     }
 
     @Override
@@ -53,7 +44,6 @@ public class ProductStock {
         return "ProductStock{" +
                 "id=" + id +
                 ", stock=" + stock +
-                ", version=" + version +
                 '}';
     }
 

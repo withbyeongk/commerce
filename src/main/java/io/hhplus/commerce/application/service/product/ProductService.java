@@ -45,15 +45,12 @@ public class ProductService {
     }
 
     public void updateStock(OrderRequestDto.OrderItemRequestDto dto) {
-        log.info("updateStock ------------- dto : ", dto);
         ProductStock productStock = productStockRepository.findById(dto.productId()).orElseThrow(()-> new CommerceException(CommerceErrorCodes.PRODUCT_STOCK_NOT_FOUND));
         productStock.minus(dto.quantity());
         ProductStock savedStock = productStockRepository.save(productStock);
-        log.info("updateStock ------------- savedStock : ", savedStock.getStock());
 
         Product product = productRepository.findById(dto.productId()).orElseThrow(()-> new CommerceException(CommerceErrorCodes.PRODUCT_NOT_FOUND));
         product.update(productStock.getStock());
         Product savedProduct = productRepository.save(product);
-        log.info("updateStock ------------- savedProduct : ", savedProduct.getStock());
     }
 }

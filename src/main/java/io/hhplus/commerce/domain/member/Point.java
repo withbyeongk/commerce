@@ -27,16 +27,8 @@ public class Point {
     @Column(name = "member_id")
     private Long memberId;
 
-    @Version
-    private int version;
-
     @Column(name = "point", nullable = false)
     private int point;
-
-    public Point(Long memberId, int point) {
-        this.memberId = memberId;
-        this.point = point;
-    }
 
     public Point(Long memberId) {
         this(memberId, DEFAULT_POINTS);
@@ -70,19 +62,18 @@ public class Point {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Point point1 = (Point) o;
-        return version == point1.version && point == point1.point && Objects.equals(memberId, point1.memberId);
+        return point == point1.point && Objects.equals(memberId, point1.memberId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(memberId, version, point);
+        return Objects.hash(memberId, point);
     }
 
     @Override
     public String toString() {
         return "Point{" +
                 "memberId=" + memberId +
-                ", version=" + version +
                 ", point=" + point +
                 '}';
     }
