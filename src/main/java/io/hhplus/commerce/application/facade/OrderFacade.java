@@ -43,10 +43,10 @@ public class OrderFacade implements OrderUsecase {
     @Retryable(
             retryFor = ObjectOptimisticLockingFailureException.class,
             maxAttempts = 5,
-            backoff = @Backoff(delay = 100),
+            backoff = @Backoff(delay = 50),
             recover = "recoverFailure",
-            noRetryFor = {CommerceException.class, RuntimeException.class},
-            notRecoverable = {CommerceException.class, RuntimeException.class}
+            noRetryFor = {CommerceException.class},
+            notRecoverable = {CommerceException.class}
     )
     public OrderResponseDto makeOrder(OrderRequestDto dto) {
         Member member = validateMember(dto.memberId());

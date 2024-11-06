@@ -1,8 +1,6 @@
 package io.hhplus.commerce.presentation.controller.order;
 
-import io.hhplus.commerce.application.facade.OrderFacade;
 import io.hhplus.commerce.application.facade.usecase.OrderUsecase;
-import io.hhplus.commerce.application.service.order.OrderService;
 import io.hhplus.commerce.presentation.controller.order.dto.OrderRequestDto;
 import io.hhplus.commerce.presentation.controller.order.dto.OrderResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/member/")
+@RequestMapping("/api/member")
 @RequiredArgsConstructor
 @Tag(name = "/api/member/", description = "주문 API")
 public class OrderController {
@@ -25,7 +23,7 @@ public class OrderController {
 
     @Operation(summary = "상품 주문")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(mediaType = "application/json", schema = @Schema(implementation = OrderResponseDto.class)))
-    @PostMapping("/{memberId}/order")
+    @PostMapping("/order")
     public OrderResponseDto makeOrder(@RequestBody OrderRequestDto dto) {
         return orderUsecase.makeOrder(dto);
     }
