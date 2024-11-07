@@ -9,7 +9,7 @@ public record OrderRequestDto(
 ) implements Serializable {
     public record OrderItemRequestDto(
             Long productId,
-            int amount
+            int quantity
     ) {
 
     }

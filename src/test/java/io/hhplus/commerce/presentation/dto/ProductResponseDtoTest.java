@@ -1,11 +1,9 @@
 package io.hhplus.commerce.presentation.dto;
 
-import io.hhplus.commerce.domain.entity.Product;
+import io.hhplus.commerce.domain.product.Product;
 import io.hhplus.commerce.presentation.controller.product.dto.ProductResponseDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,7 +15,7 @@ class ProductResponseDtoTest {
     @DisplayName("Product -> ProductResponseDto 로 잘 변환되는지 테스트합니다.")
     void toDtoTest() {
         // given
-        Product product = new Product(1L, "Product 1", 100, 50, "Description 1", null, LocalDateTime.now(), LocalDateTime.now());
+        Product product = new Product(1L, "Product 1", 100, 50, "Description 1");
 
         // when
         ProductResponseDto productResponseDto = new ProductResponseDto(product);

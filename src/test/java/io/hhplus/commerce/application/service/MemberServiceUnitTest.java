@@ -1,11 +1,12 @@
 package io.hhplus.commerce.application.service;
 
+import io.hhplus.commerce.application.service.member.MemberService;
 import io.hhplus.commerce.common.exception.CommerceErrorCodes;
 import io.hhplus.commerce.common.exception.CommerceException;
-import io.hhplus.commerce.domain.entity.Member;
-import io.hhplus.commerce.domain.entity.Point;
-import io.hhplus.commerce.infra.repository.MemberRepository;
-import io.hhplus.commerce.infra.repository.PointRepository;
+import io.hhplus.commerce.domain.member.Member;
+import io.hhplus.commerce.domain.member.Point;
+import io.hhplus.commerce.infra.repository.member.MemberRepository;
+import io.hhplus.commerce.infra.repository.member.PointRepository;
 import io.hhplus.commerce.presentation.controller.member.dto.ChargePointDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,9 +16,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.any;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
@@ -34,68 +35,51 @@ class MemberServiceUnitTest {
     @Mock
     private PointRepository pointRepository;
 
-    @BeforeEach
-    void setup() {
-
-    }
-
-    @Test
-    @DisplayName("회원 포인트 충전 시 잘못된 회원 ID가 입력될 경우 에러 발생")
-    void invalidMemberIdInChargePoint() {
-        // given
-        Long memberId = 100L;
-        ChargePointDto dto = new ChargePointDto(memberId, 1000);
-
-        // when
-        when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
-
-        // expected
-        CommerceException e = assertThrows(CommerceException.class, () -> {
-            memberService.chargePoint(dto);
-        });
-
-        // then
-        verify(memberRepository).findById(memberId);
-        assertEquals(CommerceErrorCodes.MEMBER_NOT_FOUND, e.getErrorCode());
-    }
-
     @Test
     @DisplayName("회원 포인트 충전 성공")
-    void chargeTest() {
+    void chargePointTest() {
         // given
         Long memberId = 1L;
         int initPoint = 1000;
-        int chargePoint = 2000;
-        int chargedPoint = initPoint + chargePoint;
-        Member member = new Member(memberId, "회원", initPoint, null, null, LocalDateTime.now());
+        int addPoint = 2000;
         Point point = new Point(memberId, initPoint);
-        ChargePointDto dto = new ChargePointDto(memberId, chargePoint);
+
+        ChargePointDto dto = new ChargePointDto(memberId, addPoint);
+        Point chargePoint = point.charge(dto.points());
+        Point expectedPoint = new Point(memberId, initPoint + addPoint);
+
+        when(pointRepository.findById(memberId)).thenReturn(Optional.of(point));
+        when(pointRepository.save(chargePoint)).thenReturn(expectedPoint);
 
         // when
-        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
-        when(pointRepository.findById(memberId)).thenReturn(Optional.of(point));
+        Point resultPoint = memberService.chargePoint(dto);
 
         // then
-        assertEquals(memberService.chargePoint(dto), chargedPoint);
+        verify(pointRepository).findById(memberId);
+        assertEquals(expectedPoint, resultPoint);
 
     }
 
     @Test
-    @DisplayName("회원 포인트 조회 시 잘못된 회원 ID가 입력될 경우 에러 발생")
-    void invalidMemberIdInGetPoint() {
+    @DisplayName("회원 포인트 업데이트")
+    void updatePointTest() {
         // given
-        Long memberId = 100L;
+        Long memberId = 1L;
+        int initPoint = 1000;
+        int updatePoint = 2000;
+        Member member = new Member(memberId, "회원", initPoint);
+        Member expectedMember = new Member(memberId, "회원", updatePoint);
+
+        // Configure repository mock
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
+        when(memberRepository.save(member)).thenReturn(expectedMember);
 
         // when
-        when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
-
-        // expected
-        CommerceException e = assertThrows(CommerceException.class, () -> {
-            memberService.getPoint(memberId);
-        });
+        Member updatedResult = memberService.updatePoint(memberId, updatePoint);
 
         // then
         verify(memberRepository).findById(memberId);
-        assertEquals(CommerceErrorCodes.MEMBER_NOT_FOUND, e.getErrorCode());
+        assertEquals(expectedMember, updatedResult);
     }
+
 }

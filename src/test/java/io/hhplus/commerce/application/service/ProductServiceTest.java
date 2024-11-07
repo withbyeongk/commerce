@@ -1,8 +1,9 @@
 package io.hhplus.commerce.application.service;
 
+import io.hhplus.commerce.application.service.product.ProductService;
 import io.hhplus.commerce.common.exception.CommerceErrorCodes;
 import io.hhplus.commerce.common.exception.CommerceException;
-import io.hhplus.commerce.infra.repository.ProductRepository;
+import io.hhplus.commerce.infra.repository.product.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,11 +27,6 @@ class ProductServiceTest {
     @Mock
     private ProductRepository productRepository;
 
-    @BeforeEach
-    void setup() {
-
-    }
-
     @Test
     @DisplayName("찾을 수 없는 상품ID를 입력 시 에러 발생")
     void productIdNotFoundError() {
@@ -40,7 +36,7 @@ class ProductServiceTest {
 
         // expected
         CommerceException e = assertThrows(CommerceException.class, () -> {
-            productService.findById(id);
+            productService.getProduct(id);
         });
 
         // then

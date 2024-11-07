@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.hhplus.commerce.application.service.ProductService;
-import io.hhplus.commerce.domain.entity.Product;
-import io.hhplus.commerce.infra.repository.ProductRepository;
+import io.hhplus.commerce.application.service.product.ProductService;
+import io.hhplus.commerce.domain.product.Product;
+import io.hhplus.commerce.infra.repository.product.ProductRepository;
 import io.hhplus.commerce.presentation.controller.product.dto.ProductRequestDto;
 import io.hhplus.commerce.presentation.controller.product.dto.ProductResponseDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,11 +53,6 @@ public class ProductControllerIntegratedTest {
     @BeforeEach
     public void setup() {
         baseUrl = "http://localhost:" + port;
-    }
-    
-    private Product createProduct() {
-        Product product = new Product("상품1", 1000, 20, "상품1 설명");
-        return productRepository.save(product);
     }
 
     @Test

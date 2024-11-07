@@ -2,19 +2,25 @@ spring:
   application:
     name: commerce
 
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/commerce-db
+    username: root
+    password: 1234
+
   data:
     web:
       pageable:
         default-page-size: 20
         one-indexed-parameters: true
   jpa:
+    hibernate:
+      ddl-auto: update
+      show_sql: true
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
     properties:
-      hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-        ddl-auto: create
-        format_sql: true
-        show_sql: true
-        naming:
-          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-          implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+      dialect: org.hibernate.dialect.MySQL8InnoDBDialect
+
 

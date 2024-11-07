@@ -2,6 +2,7 @@ package io.hhplus.commerce.domain.entity;
 
 import io.hhplus.commerce.common.exception.CommerceErrorCodes;
 import io.hhplus.commerce.common.exception.CommerceException;
+import io.hhplus.commerce.domain.member.Cart;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
