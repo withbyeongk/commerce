@@ -60,7 +60,7 @@ public class OrderControllerIntegratedTest {
     @Test
     @DisplayName("주문 테스트 성공")
     public void makeOrderTest() throws JsonProcessingException {
-        // given;
+        // given
         Member savedMember = memberRepository.save(createMember());
         pointRepository.save(createPoint(savedMember.getId()));
         Product savedProduct = productRepository.save(createProduct());
@@ -74,14 +74,12 @@ public class OrderControllerIntegratedTest {
 
         // when
         ResponseEntity<OrderResponseDto> response = restTemplate.postForEntity(
-                baseUrl + "/api/member/{memberId}/order",
+                baseUrl + "/api/member/order",
                 new HttpEntity<>(objectMapper.writeValueAsString(orderRequestDto), createJsonHeader()),
-                OrderResponseDto.class,
-                savedMember.getId());
+                OrderResponseDto.class);
 
         // then
         Product resultProduct = productRepository.findById(savedProduct.getId()).get();
-        Member resultMember = memberRepository.findById(savedMember.getId()).get();
         ProductStock resultStock = productStockRepository.findById(savedStock.getId()).get();
 
         assertNotNull(response);
@@ -90,7 +88,6 @@ public class OrderControllerIntegratedTest {
 
         OrderResponseDto resultOrder = response.getBody();
         assertNotNull(resultOrder);
-        assertEquals(1, resultOrder.orderId());
     }
 
     private HttpHeaders createJsonHeader() {

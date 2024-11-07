@@ -82,7 +82,7 @@ public class CartControllerIntegratedTest {
         Product savedProduct = productRepository.save(createProduct());
 
         Cart cart = new Cart(null, savedMember.getId(), savedProduct.getId(), 1);
-        cartRepository.save(cart);
+        Cart savedCart = cartRepository.save(cart);
 
         ResponseEntity<Void> responseEntity =
                 restTemplate.exchange(
@@ -90,7 +90,7 @@ public class CartControllerIntegratedTest {
                 HttpMethod.DELETE,
                 null,
                 Void.class,
-                Collections.singletonMap("cartId", 1)
+                Collections.singletonMap("cartId", savedCart.getId())
         );
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());

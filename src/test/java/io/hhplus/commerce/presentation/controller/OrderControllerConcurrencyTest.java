@@ -77,7 +77,7 @@ public class OrderControllerConcurrencyTest {
         Product savedProduct = productRepository.save(createProduct());
         productStockRepository.save(createProductStock(savedProduct.getId()));
 
-        int repeatCount = 1;
+        int repeatCount = 10;
         ExecutorService executorService = Executors.newFixedThreadPool(repeatCount);
 
         List<OrderRequestDto.OrderItemRequestDto> items = new ArrayList<>();
@@ -89,7 +89,7 @@ public class OrderControllerConcurrencyTest {
             try {
                 latch.await();
 
-                mockMvc.perform(post("/api/member/" + savedMember.getId() + "/order")
+                mockMvc.perform(post("/api/member/order")
                                 .content(objectMapper.writeValueAsString(orderDto))
                                 .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk());
