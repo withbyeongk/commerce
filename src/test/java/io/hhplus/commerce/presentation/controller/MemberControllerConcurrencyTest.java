@@ -91,7 +91,7 @@ public class MemberControllerConcurrencyTest {
         executorService.shutdown();
         executorService.awaitTermination(10, TimeUnit.SECONDS);
 
-        MvcResult result = mockMvc.perform(get("/api/member/1/points")
+        MvcResult result = mockMvc.perform(get("/api/member/"+savedMember.getId()+"/points")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
