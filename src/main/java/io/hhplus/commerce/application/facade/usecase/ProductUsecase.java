@@ -1,15 +1,14 @@
 package io.hhplus.commerce.application.facade.usecase;
 
+import io.hhplus.commerce.presentation.controller.product.dto.ProductListResponseDto;
 import io.hhplus.commerce.presentation.controller.product.dto.ProductRequestDto;
 import io.hhplus.commerce.presentation.controller.product.dto.ProductResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public interface ProductUsecase {
 
-    List<ProductResponseDto> getBestSellers();
+    ProductListResponseDto getBestSellers();
 
     ProductResponseDto getProduct(Long productId);
 
