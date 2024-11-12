@@ -1,4 +1,4 @@
-package io.hhplus.commerce.infra.redis;
+package io.hhplus.commerce.common.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

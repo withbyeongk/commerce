@@ -2,10 +2,10 @@ package io.hhplus.commerce.application.facade;
 
 import io.hhplus.commerce.application.facade.usecase.MemberUsecase;
 import io.hhplus.commerce.application.service.member.MemberService;
+import io.hhplus.commerce.common.annotation.DistributedLock;
 import io.hhplus.commerce.domain.member.Point;
 import io.hhplus.commerce.presentation.controller.member.dto.ChargePointDto;
 import io.hhplus.commerce.presentation.controller.member.dto.PointResponseDto;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ public class MemberFacade implements MemberUsecase {
     }
 
     @Override
-    @Transactional
+    @DistributedLock(key = "#dto.memberId")
     public PointResponseDto chargePoint(ChargePointDto dto) {
         Point chargedPoint = memberService.chargePoint(dto);
 
