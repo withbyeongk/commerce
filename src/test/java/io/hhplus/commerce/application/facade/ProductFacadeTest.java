@@ -64,7 +64,7 @@ class ProductFacadeTest {
             assertEquals(dto2.products().get(i).productId(), dto3.products().get(i).productId());
         }
 
-        assertNotNull(cacheManager.getCache("bestSellerCache"));
+        assertNotNull(cacheManager.getCache("redisCache"));
         verify(productFacade, times(1)).getBestSellers();
 
     }
