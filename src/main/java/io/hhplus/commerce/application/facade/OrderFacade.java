@@ -34,7 +34,7 @@ public class OrderFacade implements OrderUsecase {
     private final ProductService productService;
 
     @Override
-    @DistributedLock(key = "#dto.memberId")
+    @DistributedLock(key = "#dto.getLockKey()")
     public OrderResponseDto makeOrder(OrderRequestDto dto) {
         Member member = validateMember(dto.memberId());
         List<OrderRequestDto.OrderItemRequestDto> items = dto.products();
