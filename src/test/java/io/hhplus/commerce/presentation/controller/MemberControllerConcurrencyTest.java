@@ -63,7 +63,7 @@ public class MemberControllerConcurrencyTest {
     public void chargePointConcurrencyTest() throws Exception {
         Member savedMember = memberRepository.save(createMember());
         pointRepository.save(createPoint(savedMember.getId()));
-        int repeatCount = 10;
+        int repeatCount = 1000;
         int chargePoint = 100;
 
         ExecutorService executorService = Executors.newFixedThreadPool(repeatCount);
@@ -89,7 +89,7 @@ public class MemberControllerConcurrencyTest {
 
         latch.countDown();
         executorService.shutdown();
-        executorService.awaitTermination(10, TimeUnit.SECONDS);
+        executorService.awaitTermination(100, TimeUnit.SECONDS);
 
         MvcResult result = mockMvc.perform(get("/api/member/"+savedMember.getId()+"/points")
                         .contentType(MediaType.APPLICATION_JSON))

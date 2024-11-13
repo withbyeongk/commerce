@@ -9,7 +9,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 
@@ -22,32 +24,31 @@ public class DistributedLockAop {
 
     private final RedissonClient redissonClient;
     private final AopForTransaction aopForTransaction;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Around("@annotation(io.hhplus.commerce.common.annotation.DistributedLock)")
+    @Transactional
     public Object lock(final ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         DistributedLock distributedLock = method.getAnnotation(DistributedLock.class);
 
         String key = REDISSON_LOCK_PREFIX + CustomSpringELParser.getDynamicValue(signature.getParameterNames(), joinPoint.getArgs(), distributedLock.key());
-        RLock rLock = redissonClient.getLock(key);  // (1)
+        RLock rLock = redissonClient.getLock(key);
 
         try {
-            boolean available = rLock.tryLock(distributedLock.waitTime(), distributedLock.leaseTime(), distributedLock.timeUnit());  // (2)
-            if (!available) {
-                return false;
+            log.info("--- DistributedLockAop --- 락 획득 시도, {}", key);
+            if (rLock.tryLock(distributedLock.waitTime(), distributedLock.leaseTime(), distributedLock.timeUnit())) {
+                return aopForTransaction.proceed(joinPoint);
             }
-
-            return aopForTransaction.proceed(joinPoint);  // (3)
+            throw new RuntimeException("Redisson Lock Already Lock");
         } catch (InterruptedException e) {
             throw new InterruptedException();
         } finally {
-            try {
-                rLock.unlock();   // (4)
-            } catch (IllegalMonitorStateException e) {
-                log.info("Redisson Lock Already UnLock {} {}", method.getName(), key);
+            if (rLock.isLocked() && rLock.isHeldByCurrentThread()) {
+                log.info("--- DistributedLockAop --- 락 반납 시도, {}", key);
+                applicationEventPublisher.publishEvent(rLock);
             }
         }
     }
-
 }
