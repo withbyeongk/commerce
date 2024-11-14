@@ -29,7 +29,9 @@ public class ProductService {
     }
 
     public Long add(ProductRequestDto dto) {
-        return productRepository.save(new Product(dto)).getId();
+        Product product = productRepository.save(new Product(dto));
+        productStockRepository.save(new ProductStock(product.getId(), product.getStock()));
+        return product.getId();
     }
 
     public Product getProduct(Long productId) {

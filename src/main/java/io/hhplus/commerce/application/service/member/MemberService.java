@@ -1,5 +1,6 @@
 package io.hhplus.commerce.application.service.member;
 
+import io.hhplus.commerce.common.annotation.DistributedLock;
 import io.hhplus.commerce.common.exception.CommerceErrorCodes;
 import io.hhplus.commerce.common.exception.CommerceException;
 import io.hhplus.commerce.domain.member.Member;
@@ -7,6 +8,7 @@ import io.hhplus.commerce.domain.member.Point;
 import io.hhplus.commerce.infra.repository.member.MemberRepository;
 import io.hhplus.commerce.infra.repository.member.PointRepository;
 import io.hhplus.commerce.presentation.controller.member.dto.ChargePointDto;
+import io.hhplus.commerce.presentation.controller.member.dto.JoinMemberDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ public class MemberService {
     private final PointRepository pointRepository;
 
 
+    @DistributedLock(key = "#dto.memberId")
     public Point chargePoint(ChargePointDto dto) {
         Point point = getPointById(dto.memberId());
 
@@ -28,22 +31,6 @@ public class MemberService {
 
         return pointRepository.save(point);
     }
-
-    public Member updatePoint(Long memberId, int point) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CommerceException(CommerceErrorCodes.MEMBER_NOT_FOUND));
-
-        member.update(point);
-
-        return memberRepository.save(member);
-    }
-
-    public Member updatePoint(Point point) {
-        Member member = memberRepository.findById(point.getMemberId()).orElseThrow(() -> new CommerceException(CommerceErrorCodes.MEMBER_NOT_FOUND));
-        member.update(point.getPoint());
-        pointRepository.save(point);
-        return memberRepository.save(member);
-    }
-
 
     public Point getPointById(Long memberId) {
         Optional<Point> optionalPoint = pointRepository.findById(memberId);
@@ -60,6 +47,12 @@ public class MemberService {
 
     public Member lookupMember(Long memberId) {
         return memberRepository.findById(memberId).orElseThrow(() -> new CommerceException(CommerceErrorCodes.MEMBER_NOT_FOUND));
+    }
+
+    public Member joinMember(JoinMemberDto dto) {
+        Member member = memberRepository.save(new Member(dto.name()));
+        pointRepository.save(new Point(member.getId()));
+        return member;
     }
 
 }

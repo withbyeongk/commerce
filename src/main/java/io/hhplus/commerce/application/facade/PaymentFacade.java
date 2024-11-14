@@ -37,7 +37,6 @@ public class PaymentFacade implements PaymentUsecase {
 
         // 잔액 차감 및 업데이트
         Point usedPoint = point.use(dto.amount());
-        memberService.updatePoint(usedPoint);
 
         // 주문 상태 변경
         orderService.updateOrderState(order, ORDERE_PENDING);

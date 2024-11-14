@@ -46,7 +46,7 @@ public class OrderFacadeTest {
     void insufficientPointException() {
 
         // given
-        Member member = new Member(1L, "member", 13999);
+        Member member = new Member(1L, "member");
         Point point = new Point(1L, 13999);
 
         Product product1 = new Product(1L, "product1", 1000, 1, "description1");
@@ -83,7 +83,7 @@ public class OrderFacadeTest {
     @DisplayName("상품 주문 시 재고부족으로 에러 발생")
     void insufficientStockException() {
         // given
-        Member member = new Member(1L, "member", 14000);
+        Member member = new Member(1L, "member");
         Point point = new Point(1L, 14000);
 
         Product product1 = new Product(1L, "product1", 1000, 1, "description1");
@@ -120,7 +120,7 @@ public class OrderFacadeTest {
     @DisplayName("상품 주문 성공")
     void makeOrderTest() {
         // given
-        Member member = new Member(1L, "member", 14000);
+        Member member = new Member(1L, "member");
         Point point = new Point(1L, 14000);
 
         Product product1 = new Product(1L, "product1", 1000, 1, "description1");

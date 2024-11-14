@@ -8,7 +8,7 @@ import io.hhplus.commerce.domain.product.ProductStock;
 
 public class DummyFactory {
     public static Member createMember() {
-        return new Member("회원1", 10000);
+        return new Member("회원1");
     }
     public static Point createPoint(Long memberId) {
         return new Point(memberId, 10000);
