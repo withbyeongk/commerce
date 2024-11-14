@@ -23,4 +23,7 @@ spring:
     properties:
       dialect: org.hibernate.dialect.MySQL8InnoDBDialect
 
+  redis:
+    host: localhost
+    port: 6379
 

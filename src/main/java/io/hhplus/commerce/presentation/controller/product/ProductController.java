@@ -1,7 +1,7 @@
 package io.hhplus.commerce.presentation.controller.product;
 
-import io.hhplus.commerce.application.facade.ProductFacade;
 import io.hhplus.commerce.application.facade.usecase.ProductUsecase;
+import io.hhplus.commerce.presentation.controller.product.dto.ProductListResponseDto;
 import io.hhplus.commerce.presentation.controller.product.dto.ProductRequestDto;
 import io.hhplus.commerce.presentation.controller.product.dto.ProductResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
@@ -46,10 +44,10 @@ public class ProductController {
     @Operation(summary = "인기 상품 조회")
     @ApiResponse(responseCode = "200", description = "성공", content = {@Content(
             mediaType = "application/json",
-            array = @ArraySchema(schema = @Schema(implementation = ProductResponseDto.class))
+            array = @ArraySchema(schema = @Schema(implementation = ProductListResponseDto.class))
     )})
     @GetMapping("/bestsellers")
-    public List<ProductResponseDto> getBestSellers() {
+    public ProductListResponseDto getBestSellers() {
         return productUsecase.getBestSellers();
     }
 
