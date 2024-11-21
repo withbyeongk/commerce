@@ -35,12 +35,12 @@ public class DistributedLockAop {
         try {
             boolean available = rLock.tryLock(distributedLock.waitTime(), distributedLock.leaseTime(), distributedLock.timeUnit());  // (2)
             if (!available) {
-                return false;
+                log.info("락 획득 실패 : {}", key);
             }
 
             return aopForTransaction.proceed(joinPoint);  // (3)
         } catch (InterruptedException e) {
-            throw new InterruptedException();
+            throw new InterruptedException(e.getMessage());
         } finally {
             try {
                 rLock.unlock();   // (4)
