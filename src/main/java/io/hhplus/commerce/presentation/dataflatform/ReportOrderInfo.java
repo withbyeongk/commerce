@@ -1,6 +1,6 @@
 package io.hhplus.commerce.presentation.dataflatform;
 
-import io.hhplus.commerce.presentation.dataflatform.dto.OrderInfoToDataPlatformDto;
+import io.hhplus.commerce.presentation.dataflatform.event.OrderCompletedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ReportOrderInfo {
 
-    public void sendOrderInfomation(OrderInfoToDataPlatformDto dto) {
-        log.info("외부 데이터 플랫폼으로 주문 데이터 전송");
+    public void sendOrderInfomation(OrderCompletedEvent event) {
+        log.info("외부 데이터 플랫폼으로 주문 데이터 전송 : " + event.toString());
     }
 }

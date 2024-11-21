@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface PointRepository extends JpaRepository<Point, Long> {
 
     @Override
-    @Transactional
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+//    @Transactional
+//    @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Point> findById(Long id);
 }

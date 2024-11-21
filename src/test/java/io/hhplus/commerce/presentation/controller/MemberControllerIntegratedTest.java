@@ -21,7 +21,8 @@ import org.springframework.web.client.RestTemplate;
 
 import static io.hhplus.commerce.common.DummyFactory.createMember;
 import static io.hhplus.commerce.common.DummyFactory.createPoint;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class MemberControllerIntegratedTest {
@@ -51,7 +52,7 @@ class MemberControllerIntegratedTest {
         int cargePoint = 1000;
         Member beforeMember = createMember();
         Member savedMember = memberRepository.save(beforeMember);
-        pointRepository.save(createPoint(savedMember.getId()));
+        Point savedPoint = pointRepository.save(createPoint(savedMember.getId()));
 
         ChargePointDto dto = new ChargePointDto(savedMember.getId(), cargePoint);
 
@@ -67,10 +68,9 @@ class MemberControllerIntegratedTest {
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
-        int updatedMemberPoint = memberRepository.findById(savedMember.getId()).get().getPoint();
         int updatedPoint = pointRepository.findById(savedMember.getId()).get().getPoint();
-        assertEquals(cargePoint + beforeMember.getPoint(), updatedMemberPoint);
-        assertEquals(cargePoint + beforeMember.getPoint(), updatedPoint);
+
+        assertEquals(savedPoint.getPoint() + cargePoint, updatedPoint);
     }
 
     @Test
@@ -95,9 +95,6 @@ class MemberControllerIntegratedTest {
         // 응답 본문 검증
         PointResponseDto dto = responseEntity.getBody();
         assertNotNull(dto);
-        assertEquals(savedMember.getPoint(), dto.point());
+        assertEquals(savedPoint.getPoint(), dto.point());
     }
-
-
-
 }

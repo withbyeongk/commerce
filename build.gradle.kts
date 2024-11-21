@@ -46,6 +46,8 @@ dependencies {
     // redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("org.redisson:redisson:3.20.0")
 }
 
 tasks.withType<Test> {

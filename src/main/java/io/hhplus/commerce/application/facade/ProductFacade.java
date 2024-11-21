@@ -8,8 +8,8 @@ import io.hhplus.commerce.presentation.controller.product.dto.ProductListRespons
 import io.hhplus.commerce.presentation.controller.product.dto.ProductRequestDto;
 import io.hhplus.commerce.presentation.controller.product.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,26 +27,35 @@ public class ProductFacade implements ProductUsecase {
     private static final int BESTSELLER_COUNT = 5;
 
     @Override
+    @Cacheable("redisCache")
     public ProductListResponseDto getBestSellers() {
-        Cache cache = cacheManager.getCache("bestSellerCache");
-        if (cache != null) {
-            ProductListResponseDto cachedData = cache.get("bestSellerCache", ProductListResponseDto.class);
-            if (cachedData != null) {
-                return cachedData;
-            }
-        }
 
         List<Long> productIds = orderService.getBestSellersProductIds(BESTSELLER_DAY, BESTSELLER_COUNT);
         List<Product> products = productService.findAllByIds(productIds);
+
+//        Cache getCache = cacheManager.getCache("redisCache");
+//        if (getCache != null) {
+//            ProductListResponseDto listResponseDto = getCache.get("redisCache", ProductListResponseDto.class);
+//            if (listResponseDto != null) {
+//                return listResponseDto;
+//            }
+//        }
+
 
         List<ProductResponseDto> responseDtos = products.stream()
                 .map(ProductResponseDto::new)
                 .collect(Collectors.toList());
 
         ProductListResponseDto productListResponseDto = new ProductListResponseDto(responseDtos);
-        if (cache != null && productListResponseDto != null) {
-            cache.put("bestSellerCache", productListResponseDto);
-        }
+
+//        if (getCache != null) {
+//            ProductListResponseDto listResponseDto = getCache.get("bestSellers", ProductListResponseDto.class);
+//
+//            if (listResponseDto == null) {
+//                getCache.put("bestSellers", productListResponseDto);
+//            }
+//        }
+
         return productListResponseDto;
     }
 

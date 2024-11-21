@@ -1,8 +1,8 @@
-package io.hhplus.commerce.infra.redis;
+package io.hhplus.commerce.common.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,11 +14,11 @@ public class RedisInitConfig {
     private final CacheManager cacheManager;
 
     @Bean
-    public CommandLineRunner clearCacheOnStartup() {
+    public ApplicationRunner clearCacheOnStartup() {
         return args -> {
-            if (cacheManager.getCache("bestSellerCache") != null) {
-                cacheManager.getCache("bestSellerCache").clear();
-                log.info("bestSellerCache cleared");
+            if (cacheManager.getCache("redisCache") != null) {
+                cacheManager.getCache("redisCache").clear();
+                log.info("redisCache cleared");
             }
         };
     }

@@ -17,6 +17,7 @@ public record ProductResponseDto(
         int stock,
         @Schema(description = "상품 설명")
         String description,
+
         @Schema(description = "상품 등록일시")
         LocalDateTime createdAt
 ){

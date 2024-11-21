@@ -4,6 +4,7 @@ import io.hhplus.commerce.application.facade.usecase.OrderUsecase;
 import io.hhplus.commerce.application.service.member.MemberService;
 import io.hhplus.commerce.application.service.order.OrderService;
 import io.hhplus.commerce.application.service.product.ProductService;
+import io.hhplus.commerce.common.annotation.DistributedLock;
 import io.hhplus.commerce.common.exception.CommerceErrorCodes;
 import io.hhplus.commerce.common.exception.CommerceException;
 import io.hhplus.commerce.domain.member.Member;
@@ -17,7 +18,6 @@ import io.hhplus.commerce.presentation.controller.order.dto.OrderResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +34,7 @@ public class OrderFacade implements OrderUsecase {
     private final ProductService productService;
 
     @Override
-    @Transactional(rollbackFor = {Exception.class})
+    @DistributedLock(key = "#dto.getLockKey()")
     public OrderResponseDto makeOrder(OrderRequestDto dto) {
         Member member = validateMember(dto.memberId());
         List<OrderRequestDto.OrderItemRequestDto> items = dto.products();
