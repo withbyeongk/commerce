@@ -70,7 +70,6 @@ class PaymentFacadeTest {
 
         // then
         assertNotNull(responseDto);
-        verify(memberService, times(1)).updatePoint(any(Point.class));
         verify(orderService, times(1)).updateOrderState(any(Order.class), any(OrderStatus.class));
         verify(paymentService, times(1)).payment(any(Payment.class));
     }

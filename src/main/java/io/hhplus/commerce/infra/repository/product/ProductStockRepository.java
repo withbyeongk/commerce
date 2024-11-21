@@ -1,6 +1,5 @@
 package io.hhplus.commerce.infra.repository.product;
 
-import io.hhplus.commerce.domain.product.Product;
 import io.hhplus.commerce.domain.product.ProductStock;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;

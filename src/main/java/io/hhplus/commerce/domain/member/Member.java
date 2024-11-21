@@ -28,9 +28,6 @@ public class Member {
     @Column(name = "member_name", nullable = false, length = 20)
     private String name;
 
-    @Column(name = "point", nullable = false)
-    private int point;
-
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
@@ -42,18 +39,17 @@ public class Member {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    public Member(String name, int point) {
+    public Member(String name) {
         this.name = name;
-        this.point = point;
         this.createdAt = LocalDateTime.now();
     }
 
-    public Member(Long id, String name, int point) {
+    public Member(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.point = point;
         this.createdAt = LocalDateTime.now();
     }
+
 
     @PrePersist
     public void prePersist() {
@@ -66,18 +62,12 @@ public class Member {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void update(int point) {
-        this.point = point;
-        log.info("MEMBER :: 업데이트 :: 잔액 : {}", this.point);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Member transMember = (Member) o;
-        return point == transMember.point &&
-                Objects.equals(id, transMember.id) &&
+        return Objects.equals(id, transMember.id) &&
                 Objects.equals(name, transMember.name) &&
                 Objects.equals(deletedAt, transMember.deletedAt) &&
                 Objects.equals(updatedAt, transMember.updatedAt) &&
@@ -86,11 +76,6 @@ public class Member {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, point, deletedAt, updatedAt, createdAt);
-    }
-
-
-    public PointResponseDto toPointResponseDto() {
-        return new PointResponseDto(id, point);
+        return Objects.hash(id, name, deletedAt, updatedAt, createdAt);
     }
 }
