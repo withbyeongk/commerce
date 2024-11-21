@@ -2,8 +2,6 @@ package io.hhplus.commerce.application.facade;
 
 import io.hhplus.commerce.application.facade.usecase.MemberUsecase;
 import io.hhplus.commerce.application.service.member.MemberService;
-import io.hhplus.commerce.common.annotation.DistributedLock;
-import io.hhplus.commerce.domain.member.Point;
 import io.hhplus.commerce.presentation.controller.member.dto.ChargePointDto;
 import io.hhplus.commerce.presentation.controller.member.dto.PointResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -17,16 +15,11 @@ public class MemberFacade implements MemberUsecase {
 
     @Override
     public PointResponseDto lookupPoint(Long memberId) {
-        return memberService.lookupMember(memberId).toPointResponseDto();
+        return memberService.getPointById(memberId).toResponseDto();
     }
 
     @Override
-    @DistributedLock(key = "#dto.memberId")
     public PointResponseDto chargePoint(ChargePointDto dto) {
-        Point chargedPoint = memberService.chargePoint(dto);
-
-        memberService.updatePoint(chargedPoint.getMemberId(), chargedPoint.getPoint());
-
-        return chargedPoint.toResponseDto();
+        return memberService.chargePoint(dto).toResponseDto();
     }
 }

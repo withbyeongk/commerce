@@ -11,7 +11,9 @@ import io.hhplus.commerce.domain.order.Order;
 import io.hhplus.commerce.domain.order.Payment;
 import io.hhplus.commerce.presentation.controller.order.dto.PaymentRequestDto;
 import io.hhplus.commerce.presentation.controller.order.dto.PaymentResponseDto;
+import io.hhplus.commerce.presentation.dataflatform.event.OrderCompletedEvent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,7 @@ public class PaymentFacade implements PaymentUsecase {
     private final PaymentService paymentService;
     private final MemberService memberService;
     private final OrderService orderService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     @Transactional
@@ -37,7 +40,6 @@ public class PaymentFacade implements PaymentUsecase {
 
         // 잔액 차감 및 업데이트
         Point usedPoint = point.use(dto.amount());
-        memberService.updatePoint(usedPoint);
 
         // 주문 상태 변경
         orderService.updateOrderState(order, ORDERE_PENDING);
@@ -45,6 +47,10 @@ public class PaymentFacade implements PaymentUsecase {
         // 지불 정보 저장
         Payment payment = new Payment(order.getId(), dto.memberId(), dto.amount());
         paymentService.payment(payment);
+
+        // 결제 후 이벤트 밠행
+        OrderCompletedEvent event = new OrderCompletedEvent(this, order.getId(), order.getTotalPrice());
+        eventPublisher.publishEvent(event);
 
         return new PaymentResponseDto(payment.getId(), payment.getMemberId(), payment.getOrderId(), payment.getAmount());
     }

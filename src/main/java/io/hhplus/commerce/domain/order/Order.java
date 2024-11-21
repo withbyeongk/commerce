@@ -43,6 +43,14 @@ public class Order {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    public Order(Long id, Long memberId, int totalPrice) {
+        this.id = id;
+        this.memberId = memberId;
+        this.totalPrice = totalPrice;
+        this.status = OrderStatus.ORDERE_PENDING;
+        this.createdAt = LocalDateTime.now();
+    }
+
     public Order(Long memberId, int totalPrice) {
         this.memberId = memberId;
         this.totalPrice = totalPrice;

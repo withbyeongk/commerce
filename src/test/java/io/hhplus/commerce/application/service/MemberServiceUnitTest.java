@@ -60,26 +60,4 @@ class MemberServiceUnitTest {
 
     }
 
-    @Test
-    @DisplayName("회원 포인트 업데이트")
-    void updatePointTest() {
-        // given
-        Long memberId = 1L;
-        int initPoint = 1000;
-        int updatePoint = 2000;
-        Member member = new Member(memberId, "회원", initPoint);
-        Member expectedMember = new Member(memberId, "회원", updatePoint);
-
-        // Configure repository mock
-        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
-        when(memberRepository.save(member)).thenReturn(expectedMember);
-
-        // when
-        Member updatedResult = memberService.updatePoint(memberId, updatePoint);
-
-        // then
-        verify(memberRepository).findById(memberId);
-        assertEquals(expectedMember, updatedResult);
-    }
-
 }
