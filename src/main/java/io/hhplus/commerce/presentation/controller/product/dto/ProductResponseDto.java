@@ -3,7 +3,7 @@ package io.hhplus.commerce.presentation.controller.product.dto;
 import io.hhplus.commerce.domain.product.Product;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 public record ProductResponseDto(
@@ -19,9 +19,9 @@ public record ProductResponseDto(
         String description,
 
         @Schema(description = "상품 등록일시")
-        Timestamp createdAt
+        LocalDateTime createdAt
 ){
     public ProductResponseDto(Product product) {
-        this(product.getId(), product.getName(), product.getPrice(), product.getStock(), product.getDescription(), Timestamp.valueOf(product.getCreatedAt()));
+        this(product.getId(), product.getName(), product.getPrice(), product.getStock(), product.getDescription(), product.getCreatedAt());
     }
 }
